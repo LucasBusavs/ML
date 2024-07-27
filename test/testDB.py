@@ -1,19 +1,29 @@
 from ucimlrepo import fetch_ucirepo
 import pandas as pd
+from sklearn.preprocessing import OrdinalEncoder
 
 # fetch dataset 
-estimation_of_obesity_levels_based_on_eating_habits_and_physical_condition = fetch_ucirepo(id=544) 
+db = fetch_ucirepo(id=544) 
 
 # data (as pandas dataframes) 
-X = estimation_of_obesity_levels_based_on_eating_habits_and_physical_condition.data.features 
-y = estimation_of_obesity_levels_based_on_eating_habits_and_physical_condition.data.targets 
+X = db.data.features 
+y = db.data.targets 
 
 #print(X)
-df = pd.DataFrame(y)
-print(y.value_counts())
+categorias_ordenadas = ['Insufficient_Weight', 'Normal_Weight', 'Overweight_Level_I', 'Overweight_Level_II', 'Obesity_Type_I', 'Obesity_Type_II', 'Obesity_Type_III']
 
-# metadata 
-#print(estimation_of_obesity_levels_based_on_eating_habits_and_physical_condition.metadata) 
+ordinal_encoder = OrdinalEncoder(categories=[categorias_ordenadas])
+y['NObeyesdad'] = ordinal_encoder.fit_transform(y[['NObeyesdad']])
+
+categorias_ordenadas = ['Male', 'Female']
+ordinal_encoder = OrdinalEncoder(categories=[categorias_ordenadas])
+X['Gender'] = ordinal_encoder.fit_transform(X[['Gender']])
 
 # variable information 
-#print(estimation_of_obesity_levels_based_on_eating_habits_and_physical_condition.variables) 
+print(db.variables)
+
+categorias_ordenadas = ['no', 'Sometimes', 'Frequently', 'Always']
+ordinal_encoder = OrdinalEncoder(categories=[categorias_ordenadas])
+X['CAEC'] = ordinal_encoder.fit_transform(X[['CAEC']])
+
+print(X['CAEC'])
