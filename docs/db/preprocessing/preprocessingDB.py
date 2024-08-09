@@ -71,8 +71,8 @@ X.columns = novos_nomes_X
 # Renomear a coluna do y se for um DataFrame
 y = pd.DataFrame(y, columns=['NObeyesdad'])
 
-# Salvar X
-pd.DataFrame(X).to_csv('docs/db/X_preprocessed.csv', index=False)
+# Concatenar X e y ao longo do eixo das colunas (axis=1)
+df_final = pd.concat([X, y], axis=1)
 
-# Salvar y
-pd.DataFrame(y).to_csv('docs/db/y_preprocessed.csv', index=False)
+# Save
+df_final.to_csv('docs/db/dados_preprocessados.csv', index=False)
