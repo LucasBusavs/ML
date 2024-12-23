@@ -9,7 +9,7 @@ import pandas as pd
 
 """## Search Space"""
 
-n_neighbors = range(1, 101)
+n_neighbors =  list(range(1, 101))
 weights_options = ['uniform', 'distance']
 p_options = [1, 2]  # 1 para Manhattan, 2 para Euclidiana
 
