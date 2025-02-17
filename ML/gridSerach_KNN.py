@@ -14,7 +14,8 @@ X = dataset.iloc[:, :-1].values
 y = dataset.iloc[:, -1].values
 
 # Dividir os dados em treino e teste
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42)
 
 # Feature Scaling
 sc = StandardScaler()
@@ -28,7 +29,8 @@ knn = KNeighborsClassifier()
 param_grid = {
     'n_neighbors':  list(range(8, 102)),  # Número de vizinhos
     'weights': ['uniform', 'distance'],  # Peso das amostras
-    'metric': ['euclidean', 'manhattan', 'minkowski']  # Métricas de distância
+    'metric': ['euclidean', 'manhattan', 'minkowski'],  # Métricas de distância
+    'p': [1, 2]
 }
 
 # Configurar o GridSearchCV

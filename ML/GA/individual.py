@@ -3,4 +3,3 @@ class individual():
         self.generation = generation
         parent1 = None
         parent2 = None
-        

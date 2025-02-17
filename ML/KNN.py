@@ -9,6 +9,7 @@ from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score
 from score import pipeline_score
+import matplotlib.patches as mpatches
 
 """## Importing the dataset"""
 
@@ -22,7 +23,8 @@ y = dataset.iloc[:, -1].values
 
 """## Splitting the dataset into the Training set and Test set"""
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42)
 
 """## Feature Scaling"""
 
@@ -38,13 +40,14 @@ X_test = sc.transform(X_test)
 
 """## Training the K-NN model on the Training set"""
 
-classifier = KNeighborsClassifier(n_neighbors = 8, weights = "distance", p = 1, metric="manhattan")
+classifier = KNeighborsClassifier(
+    n_neighbors=8, weights="distance", p=1, metric="manhattan")
 classifier.fit(X_train, y_train)
 
 """## Predicting the Test set results"""
 
 y_pred = classifier.predict(X_test)
-#print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+# print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
 
 """## Making the Confusion Matrix & Classification Report"""
 
@@ -56,50 +59,34 @@ print(classification_report(y_test, y_pred))
 score = pipeline_score(y_test, y_pred)
 print(f"Score: {score:.2f}")
 
-# """## Visualizing"""
+"""## PCA for visualization"""
+pca = PCA(n_components=2)
+X_test_pca = pca.fit_transform(X_test)
 
-# pca = PCA(n_components=2)
-# X_pca = pca.fit_transform(X)
+# Criar a figura com dois subgráficos (1 linha, 2 colunas)
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
 
-# # Transformar os dados de treino e teste
-# X_train_pca = pca.transform(X_train)
-# X_test_pca = pca.transform(X_test)
+# Lista de classes assumindo que variam de 0 a 6
+classes = range(7)
+legend_patches = [mpatches.Patch(color=plt.get_cmap(
+    "tab10")(i), label=f"Classe {i}") for i in classes]
 
-# # Limites do gráfico baseados em todos os dados para manter escala consistente
-# x_min, x_max = X_pca[:, 0].min() - 1, X_pca[:, 0].max() + 1
-# y_min, y_max = X_pca[:, 1].min() - 1, X_pca[:, 1].max() + 1
+# 🔹 Gráfico 1: Valores reais
+axes[0].scatter(X_test_pca[:, 0], X_test_pca[:, 1], c=y_test,
+                cmap="tab10", edgecolors="k", alpha=0.75)
+axes[0].set_title("Valores Reais")
+axes[0].set_xlabel("Componente Principal 1")
+axes[0].set_ylabel("Componente Principal 2")
 
-# # Criar grid de pontos
-# xx, yy = np.meshgrid(
-#     np.arange(x_min, x_max, 0.1),
-#     np.arange(y_min, y_max, 0.1)
-# )
+# 🔹 Gráfico 2: Previsões do modelo
+axes[1].scatter(X_test_pca[:, 0], X_test_pca[:, 1], c=y_pred,
+                cmap="tab10", edgecolors="k", alpha=0.75)
+axes[1].set_title("Previsões do Modelo")
+axes[1].set_xlabel("Componente Principal 1")
+axes[1].set_ylabel("Componente Principal 2")
 
-# # Prever as classes para o grid
-# Z = classifier.predict(pca.inverse_transform(np.c_[xx.ravel(), yy.ravel()]))
-# Z = Z.reshape(xx.shape)
+# Criar legenda única para ambos os gráficos
+fig.legend(handles=legend_patches, title="Classes", loc="upper right")
 
-# # Configurar a figura com subplots lado a lado
-# fig, axes = plt.subplots(1, 2, figsize=(18, 8))
-
-# # Subplot para dados de treino
-# axes[0].contourf(xx, yy, Z, alpha=0.3, cmap=plt.cm.Paired)
-# scatter_train = axes[0].scatter(X_train_pca[:, 0], X_train_pca[:, 1], c=y_train, edgecolor='k', cmap=plt.cm.Paired)
-# axes[0].set_title("Regiões de Decisão - Dados de Treino")
-# axes[0].set_xlabel("Componente Principal 1")
-# axes[0].set_ylabel("Componente Principal 2")
-
-# # Subplot para dados de teste
-# axes[1].contourf(xx, yy, Z, alpha=0.3, cmap=plt.cm.Paired)
-# scatter_test = axes[1].scatter(X_test_pca[:, 0], X_test_pca[:, 1], c=y_test, edgecolor='k', cmap=plt.cm.Paired)
-# axes[1].set_title("Regiões de Decisão - Dados de Teste")
-# axes[1].set_xlabel("Componente Principal 1")
-# axes[1].set_ylabel("Componente Principal 2")
-
-# # Ajustar espaçamento entre os subplots
-# fig.tight_layout()
-
-# # Adicionar uma barra de cores compartilhada
-# cbar = fig.colorbar(scatter_train, ax=axes, orientation='vertical', fraction=0.02, pad=0.1, label="Classes")
-
-# plt.show()
+plt.tight_layout()
+plt.show()
