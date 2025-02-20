@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import StandardScaler
+from score import pipeline_score
 
 # data = load_iris()
 # X = data.data
@@ -37,7 +38,7 @@ param_grid = {
 grid_search = GridSearchCV(
     estimator=knn,
     param_grid=param_grid,
-    scoring='accuracy',  # Métrica para avaliação
+    scoring=pipeline_score,  # Métrica para avaliação
     cv=5,  # Validação cruzada com 5 divisões
     verbose=1,  # Para exibir logs
     n_jobs=-1  # Usar todos os núcleos disponíveis

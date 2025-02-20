@@ -5,6 +5,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+from score import pipeline_score
 
 # Carregar dataset
 dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
@@ -21,6 +22,7 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Função de avaliação (fitness)
+# TODO: Implementar a função de avaliação elaborada no arquivo score.py
 
 
 def evaluate_knn(params):
@@ -28,19 +30,22 @@ def evaluate_knn(params):
     model = KNeighborsClassifier(n_neighbors=n_neighbors, weights=weights, p=p)
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
-    return accuracy_score(y_test, y_pred)
+    # return accuracy_score(y_test, y_pred)
+    return pipeline_score(y_test, y_pred)
 
 # Criar população inicial
+# TODO: Implementar a estrutura indivíduo para maior generalização e consistência
 
 
 def create_population(size):
     return [
-        (random.randint(1, 101), random.choice(
+        (random.randint(1, 102), random.choice(
             ["uniform", "distance"]), random.choice([1, 2]))
         for _ in range(size)
     ]
 
 # Seleção dos melhores indivíduos
+# TODO: Verificiar forma de seleção dos melhores indivíduos, utilizar primariamente o método de roleta
 
 
 def select_best(population, scores, num_best=5):
@@ -49,6 +54,7 @@ def select_best(population, scores, num_best=5):
     return [x[0] for x in sorted_pop[:num_best]]
 
 # Cruzamento (crossover)
+# TODO: Implementar pCross e definir chromossomo onde será feito o crossover
 
 
 def crossover(parent1, parent2):
@@ -57,6 +63,7 @@ def crossover(parent1, parent2):
     return child1, child2
 
 # Mutação
+# TODO: Melhorar implementação da mutação, verificar se a mutação está sendo feita de forma correta
 
 
 def mutate(individual, mutation_rate=0.02):
@@ -70,6 +77,8 @@ def mutate(individual, mutation_rate=0.02):
     return individual
 
 # Algoritmo Genético Principal
+# TODO: Melhorar implementação da seleção de pais
+# TODO: Definir critério de parada
 
 
 def genetic_algorithm(generations=10, population_size=10):
