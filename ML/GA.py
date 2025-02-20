@@ -35,7 +35,8 @@ def fitness_function(individual):
     return individual.fitness
 
 # Criar população inicial
-# TODO: Implementar a estrutura indivíduo para maior generalização e consistência
+# TODO: Incrementar a estrutura indivíduo para maior generalização e consistência
+# TODO: Implementar os valores estatísticos, max, min e sumFitness (Possívelmente criar uma classe para a população)
 
 
 def create_population(population_size):
@@ -87,10 +88,10 @@ def mutate(individual, pMutation=0.02):
 def genetic_algorithm(generations=10, population_size=10):
     population = create_population(population_size)
 
-    for generation in range(generations):
+    for gen in range(generations):
         scores = [fitness_function(ind) for ind in population]
         best = select_best(population, scores)
-        print(f"Geração {generation+1} - Melhor Score: {max(scores):.4f}")
+        print(f"Geração {gen+1} - Melhor Score: {max(scores):.4f}")
 
         next_gen = best[:2]  # Mantém os dois melhores
         while len(next_gen) < population_size:
