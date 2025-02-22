@@ -4,6 +4,11 @@ from individual import Individual_KNN
 from score import pipeline_score
 
 
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+
 class Population:
     """
     Representa uma população de indivíduos para otimização de hiperparâmetros via algoritmo genético.
@@ -34,16 +39,18 @@ class Population:
             ind.fitness = score  # Atribui o fitness ao indivíduo
             self.fitness.append(score)  # Adiciona à lista de fitness
 
-    def selecionar_melhores(self, num_selecionados):
+    def select(self):
         """
-        Seleciona os melhores indivíduos com base no fitness.
+        Seleciona a partir de roulette wheel selection.
 
-        :param num_selecionados: Quantidade de indivíduos a serem mantidos.
         """
-        melhores_indices = np.argsort(
-            self.fitness)[-num_selecionados:]  # Ordena e pega os melhores
-        self.individuos = [self.individuos[i] for i in melhores_indices]
-        self.fitness = [self.fitness[i] for i in melhores_indices]
+        partSum = 0
+        sumFitness = sum(self.fitness)
+        rand = random.random() * sumFitness
+        for i in range(self.pSize):
+            partSum += self.fitness[i]
+            if partSum >= rand:
+                return self.individuals[i]
 
     def crossover(self):
         """
@@ -93,3 +100,23 @@ class Population:
 
     def __repr__(self):
         return f"Populacao({len(self.individuos)} indivíduos)"
+
+
+# Carregar dataset
+dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+
+# Divisão dos dados
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42)
+
+# Normalizar os dados
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+initPop = Population(10)
+initPop.fitness_function(X_train, X_test, y_train, y_test)
+mate1 = initPop.select()
+mate2 = initPop.select()
