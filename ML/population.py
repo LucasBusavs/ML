@@ -78,8 +78,7 @@ class Population:
         :param pMutation: Probabilidade de mutação.
         """
         for individual in self.individuals:
-            if random.random() < pMutation:
-                individual.mutation(pMutation)
+            individual.mutation(pMutation)
 
     def statistics(self):
         """
