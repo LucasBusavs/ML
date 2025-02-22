@@ -1,4 +1,5 @@
 import random
+from sklearn.neighbors import KNeighborsClassifier
 
 
 class Individual_KNN():
@@ -21,7 +22,8 @@ class Individual_KNN():
             'p': random.choice(self.hyperparam['p'])
         }
 
-    # def __init__(self, hyperparam, generation=0):
-    #     self.generation = generation
-    #     parent1 = None
-    #     parent2 = None
+    def get_model(self):
+        """
+        Retorna um modelo KNN com os hiperparâmetros do indivíduo.
+        """
+        return KNeighborsClassifier(**self.hyperparam)
