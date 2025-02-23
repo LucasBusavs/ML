@@ -6,10 +6,6 @@ from sklearn.metrics import classification_report
 from sklearn.preprocessing import StandardScaler
 from score import pipeline_score
 
-# data = load_iris()
-# X = data.data
-# y = data.target
-
 dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
 X = dataset.iloc[:, :-1].values
 y = dataset.iloc[:, -1].values
@@ -28,9 +24,8 @@ knn = KNeighborsClassifier()
 
 # Definir os hiperparâmetros para otimização
 param_grid = {
-    'n_neighbors':  list(range(8, 102)),  # Número de vizinhos
+    'n_neighbors':  list(range(8, 101)),  # Número de vizinhos
     'weights': ['uniform', 'distance'],  # Peso das amostras
-    'metric': ['euclidean', 'manhattan', 'minkowski'],  # Métricas de distância
     'p': [1, 2]
 }
 
@@ -55,3 +50,4 @@ best_knn = grid_search.best_estimator_
 y_pred = best_knn.predict(X_test)
 print("\nRelatório de classificação:")
 print(classification_report(y_test, y_pred))
+print("Score:", pipeline_score(y_test, y_pred))

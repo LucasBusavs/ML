@@ -53,7 +53,7 @@ class Population:
                 return self.individuals[i]
 
     # TODO: Melhoraria com a implementação de um cromossomo binário
-    def crossover(self, parent1, parent2, pCross=0.8, pMutation=0.02):
+    def crossover(self, parent1, parent2, pCross, pMutation):
         """
         Realiza o crossover entre pares de indivíduos.
         """
@@ -101,28 +101,3 @@ class Population:
             "meanFitness": np.mean(self.fitness),
             "sumFitness": sum(self.fitness)
         }
-
-    def __repr__(self):
-        return f"Populacao({len(self.individuos)} indivíduos)"
-
-
-# Carregar dataset
-dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
-X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, -1].values
-
-# Divisão dos dados
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.25, random_state=42)
-
-# Normalizar os dados
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
-
-initPop = Population(10)
-initPop.fitness_function(X_train, X_test, y_train, y_test)
-mate1 = initPop.select()
-mate2 = initPop.select()
-
-child1, child2 = initPop.crossover(mate1, mate2)

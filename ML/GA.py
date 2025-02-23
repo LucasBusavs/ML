@@ -1,10 +1,8 @@
-import numpy as np
-import random
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
-from score import pipeline_score
+from population import Population
+import time
 
 # Carregar dataset
 dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
@@ -20,39 +18,53 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-# Cruzamento (crossover)
-# TODO: Implementar pCross e definir chromossomo onde será feito o crossover
-
-
-def crossover(parent1, parent2):
-    child1 = (parent1[0], parent2[1], parent1[2])
-    child2 = (parent2[0], parent1[1], parent2[2])
-    return child1, child2
-
 # Algoritmo Genético Principal
-# TODO: Melhorar implementação da seleção de pais
 # TODO: Definir critério de parada
 
 
-def genetic_algorithm(generations=10, population_size=10):
-    population = create_population(population_size)
+def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.03):
+    old_pop = Population(popSize)    # Cria uma população inicial
+    old_pop.fitness_function(X_train, X_test, y_train, y_test)
+    maxIndiv = old_pop.individuals[0]  # Inicializa com um indivíduo válido
 
     for gen in range(generations):
-        scores = [fitness_function(ind) for ind in population]
-        best = select_best(population, scores)
-        print(f"Geração {gen+1} - Melhor Score: {max(scores):.4f}")
+        # Calcula o fitness da população
+        print(f"Geração {gen+1}")
+        print(old_pop.statistics())
 
-        next_gen = best[:2]  # Mantém os dois melhores
-        while len(next_gen) < population_size:
-            parent1, parent2 = random.sample(best, 2)
-            child1, child2 = crossover(parent1, parent2)
-            next_gen.extend([mutate(child1), mutate(child2)])
+        for i in range(popSize):
+            if old_pop.individuals[i].fitness > maxIndiv.fitness:
+                maxIndiv = old_pop.individuals[i]
 
-        population = next_gen[:population_size]
+        # Cria uma nova população vazia
+        new_pop = Population(0)
 
-    return best[0]
+        while new_pop.pSize < popSize:
+            # Seleciona os pais
+            mate1 = old_pop.select()
+
+            # Garante que mate2 é diferente de mate1
+            while True:
+                mate2 = old_pop.select()
+                if mate2 != mate1:
+                    break
+
+            # Realiza o crossover
+            child1, child2 = old_pop.crossover(mate1, mate2, pCross, pMutation)
+            new_pop.individuals.extend([child1, child2])
+
+            new_pop.pSize += 2
+
+        old_pop = new_pop
+        old_pop.fitness_function(X_train, X_test, y_train, y_test)
+
+    return maxIndiv
 
 
 # Executando a otimização
-best_params = genetic_algorithm()
-print("Melhores hiperparâmetros encontrados:", best_params)
+start_time = time.perf_counter()
+bestIndividual = generation()
+bestIndividual.show_hyperparam()
+end_time = time.perf_counter()
+elapsed_time = end_time - start_time
+print(f"Tempo de execução: {elapsed_time:.6f} segundos")
