@@ -39,10 +39,10 @@ class Population:
             ind.fitness = score  # Atribui o fitness ao indivíduo
             self.fitness.append(score)  # Adiciona à lista de fitness
 
+    # TODO: Analisar se é a melhor forma de ser feito
     def select(self):
         """
         Seleciona a partir de roulette wheel selection.
-
         """
         partSum = 0
         sumFitness = sum(self.fitness)
@@ -52,40 +52,38 @@ class Population:
             if partSum >= rand:
                 return self.individuals[i]
 
-    def crossover(self):
+    def crossover(self, parent1, parent2, pCross=0.8, pMutation=0.02):
         """
         Realiza o crossover entre pares de indivíduos.
         """
-        nova_geracao = []
-        while len(nova_geracao) < self.tamanho:
-            # Escolhe 2 indivíduos aleatórios
-            pai1, pai2 = random.sample(self.individuos, 2)
-            filho = self.recombinar(pai1, pai2)
-            nova_geracao.append(filho)
 
-        self.individuos = nova_geracao  # Substitui pela nova geração
+        child1 = Individual_KNN()
+        child2 = Individual_KNN()
 
-    def recombinar(self, pai1, pai2):
-        """
-        Faz o crossover de dois indivíduos, gerando um novo.
+        if random.random() < pCross:
+            jCross = random.randint(
+                1, len(self.individuals[0].hyperparam) - 1)  # Ponto de corte
+        else:
+            # Sem crossover
+            jCross = len(self.individuals[0].hyperparam)
 
-        :param pai1, pai2: Indivíduos que serão recombinados.
-        :return: Novo indivíduo gerado.
-        """
-        filho = Individual_KNN()
-        for chave in filho.hiperparametros.keys():
-            filho.hiperparametros[chave] = random.choice(
-                [pai1.hiperparametros[chave], pai2.hiperparametros[chave]])
-        return filho
+        for i in range(jCross):
+            child1.hyperparam[list(self.individuals[0].hyperparam.keys())[
+                i]] = parent1.hyperparam[list(parent1.hyperparam.keys())[i]]
+            child2.hyperparam[list(self.individuals[0].hyperparam.keys())[
+                i]] = parent2.hyperparam[list(parent2.hyperparam.keys())[i]]
 
-    def mutation(self, pMutation=0.02):
-        """
-        Aplica mutação em todos os indivíduos da população.
+        if jCross < len(self.individuals[0].hyperparam):
+            for i in range(jCross, len(self.individuals[0].hyperparam)):
+                child1.hyperparam[list(self.individuals[0].hyperparam.keys())[
+                    i]] = parent2.hyperparam[list(parent2.hyperparam.keys())[i]]
+                child2.hyperparam[list(self.individuals[0].hyperparam.keys())[
+                    i]] = parent1.hyperparam[list(parent1.hyperparam.keys())[i]]
 
-        :param pMutation: Probabilidade de mutação.
-        """
-        for individual in self.individuals:
-            individual.mutation(pMutation)
+        child1.mutation(pMutation)
+        child2.mutation(pMutation)
+
+        return child1, child2
 
     def statistics(self):
         """
@@ -120,3 +118,5 @@ initPop = Population(10)
 initPop.fitness_function(X_train, X_test, y_train, y_test)
 mate1 = initPop.select()
 mate2 = initPop.select()
+
+child1, child2 = initPop.crossover(mate1, mate2)
