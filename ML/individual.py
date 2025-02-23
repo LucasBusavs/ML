@@ -3,8 +3,9 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 class Individual_KNN():
-
     fitness = None
+    parent1 = None
+    parent2 = None
 
     hyperparam_dict = {
         'n_neighbors': (1, 102),  # Número de vizinhos (mínimo: 1, máximo: 101)

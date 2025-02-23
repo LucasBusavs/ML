@@ -52,6 +52,7 @@ class Population:
             if partSum >= rand:
                 return self.individuals[i]
 
+    # TODO: Melhoraria com a implementação de um cromossomo binário
     def crossover(self, parent1, parent2, pCross=0.8, pMutation=0.02):
         """
         Realiza o crossover entre pares de indivíduos.
@@ -82,6 +83,11 @@ class Population:
 
         child1.mutation(pMutation)
         child2.mutation(pMutation)
+
+        child1.parent1 = parent1
+        child1.parent2 = parent2
+        child2.parent1 = parent1
+        child2.parent2 = parent2
 
         return child1, child2
 
