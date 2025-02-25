@@ -4,14 +4,19 @@ import pandas as pd
 from population import Population
 import time
 import numpy as np
+from ucimlrepo import fetch_ucirepo
 
-# Carregar dataset
-dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
-X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, -1].values
+# fetch dataset
+breast_cancer_wisconsin_diagnostic = fetch_ucirepo(id=17)
+
+# data (as pandas dataframes)
+X = breast_cancer_wisconsin_diagnostic.data.features
+y = breast_cancer_wisconsin_diagnostic.data.targets
+y = y.values.flatten()
 
 # Contar o número de classes únicas
 n_classes = len(np.unique(y))  # Número de classes
+print(f"Número de classes: {n_classes}")
 
 # Divisão dos dados
 X_train, X_test, y_train, y_test = train_test_split(
@@ -69,6 +74,7 @@ def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.03):
 start_time = time.perf_counter()
 bestIndividual = generation()
 bestIndividual.show_hyperparam()
+print(f"Score: {bestIndividual.fitness}")
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
 print(f"Tempo de execução: {elapsed_time:.6f} segundos")
