@@ -1,5 +1,4 @@
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 import pandas as pd
 from population import Population
 import time
@@ -16,11 +15,6 @@ n_classes = len(np.unique(y))  # Número de classes
 # Divisão dos dados
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.25, random_state=42)
-
-# Normalizar os dados
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
 
 # Algoritmo Genético Principal
 # TODO: Definir critério de parada

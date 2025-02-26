@@ -8,7 +8,7 @@ class Individual_KNN():
     parent2 = None
 
     hyperparam_dict = {
-        'n_neighbors': (3, 25),  # Número de vizinhos (mínimo: 3, máximo: 101)
+        'n_neighbors': (3, 101),  # Número de vizinhos (mínimo: 3, máximo: 101)
         'weights': ['uniform', 'distance'],  # Tipo de ponderação
         'p': [1, 2]  # Distância de Minkowski: 1 (Manhattan) ou 2 (Euclidiana)
     }

@@ -1,5 +1,4 @@
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 import pandas as pd
 from population import Population
 import time
@@ -14,18 +13,24 @@ X = breast_cancer_wisconsin_diagnostic.data.features
 y = breast_cancer_wisconsin_diagnostic.data.targets
 y = y.values.flatten()
 
+# Contar frequências das classes
+unique, counts = np.unique(y, return_counts=True)
+
+# Encontrar a classe com menor frequência
+min_idx = np.argmin(counts)
+
+# min_class = unique[min_idx]
+min_count = counts[min_idx]
+max_instances = len(y)
+
 # Contar o número de classes únicas
-n_classes = len(np.unique(y))  # Número de classes
+n_classes = len(counts)  # Número de classes
+
 print(f"Número de classes: {n_classes}")
 
 # Divisão dos dados
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.25, random_state=42)
-
-# Normalizar os dados
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
 
 # Algoritmo Genético Principal
 # TODO: Definir critério de parada
