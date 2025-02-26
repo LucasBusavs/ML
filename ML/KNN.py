@@ -41,7 +41,7 @@ X_test = sc.transform(X_test)
 """## Training the K-NN model on the Training set"""
 
 classifier = KNeighborsClassifier(
-    n_neighbors=3, weights="distance", p=1)
+    n_neighbors=9, weights="distance", p=1)
 classifier.fit(X_train, y_train)
 
 """## Predicting the Test set results"""

@@ -24,7 +24,7 @@ knn = KNeighborsClassifier()
 
 # Definir os hiperparâmetros para otimização
 param_grid = {
-    'n_neighbors':  list(range(8, 101)),  # Número de vizinhos
+    'n_neighbors':  list(range(1, 101)),  # Número de vizinhos
     'weights': ['uniform', 'distance'],  # Peso das amostras
     'p': [1, 2]
 }
