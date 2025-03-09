@@ -40,7 +40,6 @@ class Individual_KNN():
         return KNeighborsClassifier(**self.hyperparam)
 
     # TODO: Implementação de chromossomo binário facilitaria a mutação
-
     def mutation(self, pMutation):
         """
         Realiza a mutação de um indivíduo com probabilidade pMutation.

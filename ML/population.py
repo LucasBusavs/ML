@@ -35,7 +35,6 @@ class Population:
             ind.fitness = score  # Atribui o fitness ao indivíduo
             self.fitness.append(score)  # Adiciona à lista de fitness
 
-    # TODO: Analisar se é a melhor forma de ser feito
     def select(self):
         """
         Seleciona a partir de roulette wheel selection.

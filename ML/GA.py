@@ -22,10 +22,10 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
     old_pop = Population(popSize, n_classes)    # Cria uma população inicial
-    old_pop.fitness_function(X_train, X_test, y_train, y_test)
     maxIndiv = old_pop.individuals[0]  # Inicializa com um indivíduo válido
 
     for gen in range(generations):
+        old_pop.fitness_function(X_train, X_test, y_train, y_test)
         # Calcula o fitness da população
         print(f"Geração {gen+1}")
         print(old_pop.statistics())
@@ -33,6 +33,10 @@ def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
         for i in range(popSize):
             if old_pop.individuals[i].fitness > maxIndiv.fitness:
                 maxIndiv = old_pop.individuals[i]
+
+        print(f"Melhor indivíduo da geração {gen+1}")
+        maxIndiv.show_hyperparam()
+        print("\n")
 
         # Cria uma nova população vazia
         new_pop = Population(0, n_classes)
@@ -54,7 +58,6 @@ def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
             new_pop.pSize += 2
 
         old_pop = new_pop
-        old_pop.fitness_function(X_train, X_test, y_train, y_test)
 
     return maxIndiv
 
@@ -62,6 +65,7 @@ def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
 # Executando a otimização
 start_time = time.perf_counter()
 bestIndividual = generation()
+print("Melhor indivíduo encontrado:")
 bestIndividual.show_hyperparam()
 end_time = time.perf_counter()
 elapsed_time = end_time - start_time
