@@ -13,16 +13,17 @@ class Individual_KNN():
         'p': [1, 2]  # Distância de Minkowski: 1 (Manhattan) ou 2 (Euclidiana)
     }
 
-    def __init__(self, n_classes, n_instances):
+    def __init__(self, n_classes, n_instances, n_neighbors=None, weights=None, p=None):
         """
-        Inicializa um indivíduo com hiperparâmetros aleatórios dentro dos intervalos definidos.
+        Inicializa um indivíduo. Se os hiperparâmetros forem passados, utiliza-os. 
+        Caso contrário, gera valores aleatórios.
         """
         self.n_classes = n_classes
         self.n_instances = n_instances
         self.hyperparam = {
-            'n_neighbors': self.get_valid_k(),
-            'weights': random.choice(self.hyperparam_dict['weights']),
-            'p': random.choice(self.hyperparam_dict['p'])
+            'n_neighbors': n_neighbors if n_neighbors is not None else self.get_valid_k(),
+            'weights': weights if weights is not None else random.choice(self.hyperparam_dict['weights']),
+            'p': p if p is not None else random.choice(self.hyperparam_dict['p'])
         }
 
     def get_valid_k(self):
