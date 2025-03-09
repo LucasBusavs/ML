@@ -9,18 +9,26 @@ class Population:
     Representa uma população de indivíduos para otimização de hiperparâmetros via algoritmo genético.
     """
 
-    def __init__(self, pSize, n_classes, n_instances):
+    def __init__(self, pSize, n_classes, n_instances, individuals=None):
         """
         Inicializa uma população de indivíduos.
 
         :param pSize: Número de indivíduos na população.
+        :param n_classes: Número de classes do problema.
+        :param n_instances: Número de instâncias no dataset.
+        :param individuals: Lista opcional de indivíduos para inicialização via JSON.
         """
         self.n_classes = n_classes
         self.n_instances = n_instances
         self.pSize = pSize
-        self.individuals = [Individual_KNN(
-            n_classes, n_instances) for _ in range(pSize)]
         self.fitness = []
+
+        if individuals is None:
+            self.individuals = [Individual_KNN(
+                n_classes, n_instances) for _ in range(pSize)]
+        else:
+            self.individuals = [Individual_KNN(
+                n_classes, n_instances, **ind) for ind in individuals]
 
     def fitness_function(self, X_train, X_test, y_train, y_test):
         """
