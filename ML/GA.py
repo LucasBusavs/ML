@@ -20,7 +20,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # TODO: Definir critério de parada
 
 
-def generation(generations=10, popSize=20, pCross=0.8, pMutation=0.02):
+def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
     old_pop = Population(popSize, n_classes)    # Cria uma população inicial
     old_pop.fitness_function(X_train, X_test, y_train, y_test)
     maxIndiv = old_pop.individuals[0]  # Inicializa com um indivíduo válido
