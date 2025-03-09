@@ -13,11 +13,12 @@ class Individual_KNN():
         'p': [1, 2]  # Distância de Minkowski: 1 (Manhattan) ou 2 (Euclidiana)
     }
 
-    def __init__(self, n_classes):
+    def __init__(self, n_classes, n_instances):
         """
         Inicializa um indivíduo com hiperparâmetros aleatórios dentro dos intervalos definidos.
         """
         self.n_classes = n_classes
+        self.n_instances = n_instances
         self.hyperparam = {
             'n_neighbors': self.get_valid_k(),
             'weights': random.choice(self.hyperparam_dict['weights']),
@@ -27,9 +28,9 @@ class Individual_KNN():
     def get_valid_k(self):
         """Gera um valor válido de 'n_neighbors' de acordo com as restrições."""
         min_k, max_k = self.hyperparam_dict['n_neighbors']
-        k = random.randint(max(self.n_classes, min_k),
-                           max_k)  # Garante K >= n_classes
-        while k % self.n_classes == 0:  # Garante que não seja divisível pelo número de classes
+        # Garante K > n_classes e K não divisível por n_classes
+        k = random.randint(max(self.n_classes + 1, min_k), max_k)
+        while k % self.n_classes == 0:
             k = random.randint(max(self.n_classes, min_k), max_k)
         return k
 

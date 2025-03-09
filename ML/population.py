@@ -9,15 +9,17 @@ class Population:
     Representa uma população de indivíduos para otimização de hiperparâmetros via algoritmo genético.
     """
 
-    def __init__(self, pSize, n_classes):
+    def __init__(self, pSize, n_classes, n_instances):
         """
         Inicializa uma população de indivíduos.
 
         :param pSize: Número de indivíduos na população.
         """
         self.n_classes = n_classes
+        self.n_instances = n_instances
         self.pSize = pSize
-        self.individuals = [Individual_KNN(n_classes) for _ in range(pSize)]
+        self.individuals = [Individual_KNN(
+            n_classes, n_instances) for _ in range(pSize)]
         self.fitness = []  # Lista para armazenar os valores de fitness
 
     def fitness_function(self, X_train, X_test, y_train, y_test):
@@ -53,8 +55,8 @@ class Population:
         Realiza o crossover entre pares de indivíduos.
         """
 
-        child1 = Individual_KNN(self.n_classes)
-        child2 = Individual_KNN(self.n_classes)
+        child1 = Individual_KNN(self.n_classes, self.n_instances)
+        child2 = Individual_KNN(self.n_classes, self.n_instances)
 
         if random.random() < pCross:
             jCross = random.randint(

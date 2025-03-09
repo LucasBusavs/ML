@@ -11,6 +11,7 @@ y = dataset.iloc[:, -1].values
 
 # Contar o número de classes únicas
 n_classes = len(np.unique(y))  # Número de classes
+instances = len(dataset)  # Número de instâncias
 
 # Divisão dos dados
 X_train, X_test, y_train, y_test = train_test_split(
@@ -21,7 +22,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
-    old_pop = Population(popSize, n_classes)    # Cria uma população inicial
+    # Cria uma população inicial
+    old_pop = Population(popSize, n_classes, instances)
     maxIndiv = old_pop.individuals[0]  # Inicializa com um indivíduo válido
 
     for gen in range(generations):
@@ -30,16 +32,21 @@ def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
         print(f"Geração {gen+1}")
         print(old_pop.statistics())
 
+        maxIndivGen = old_pop.individuals[0]
+        i = 1
         for i in range(popSize):
-            if old_pop.individuals[i].fitness > maxIndiv.fitness:
-                maxIndiv = old_pop.individuals[i]
+            if old_pop.individuals[i].fitness > maxIndivGen.fitness:
+                maxIndivGen = old_pop.individuals[i]
+
+        if maxIndivGen.fitness > maxIndiv.fitness:
+            maxIndiv = maxIndivGen
 
         print(f"Melhor indivíduo da geração {gen+1}")
-        maxIndiv.show_hyperparam()
+        maxIndivGen.show_hyperparam()
         print("\n")
 
         # Cria uma nova população vazia
-        new_pop = Population(0, n_classes)
+        new_pop = Population(0, n_classes, instances)
 
         while new_pop.pSize < popSize:
             # Seleciona os pais
@@ -62,11 +69,12 @@ def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
     return maxIndiv
 
 
-# Executando a otimização
-start_time = time.perf_counter()
-bestIndividual = generation()
-print("Melhor indivíduo encontrado:")
-bestIndividual.show_hyperparam()
-end_time = time.perf_counter()
-elapsed_time = end_time - start_time
-print(f"Tempo de execução: {elapsed_time:.6f} segundos")
+if __name__ == '__main__':
+    # Executando a otimização
+    start_time = time.perf_counter()
+    bestIndividual = generation()
+    print("Melhor indivíduo encontrado:")
+    bestIndividual.show_hyperparam()
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    print(f"Tempo de execução: {elapsed_time:.6f} segundos")
