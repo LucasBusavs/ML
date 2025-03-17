@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from population import Population
+from population import Population_KNN, Population_RF
 import time
 import numpy as np
 import json
@@ -22,35 +22,35 @@ X_train, X_test, y_train, y_test = train_test_split(
 # TODO: Definir critério de parada
 
 
-def generation(generations=10, popSize=20, pCross=0.8, pMutation=0.02):
+def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
     # Cria uma população inicial
-    # old_pop = Population(popSize, n_classes, instances)
+    old_pop = Population_RF(popSize)
 
-    json_data = '''[
-    {"n_neighbors": 14, "weights": "distance", "p": 1},
-    {"n_neighbors": 18, "weights": "distance", "p": 2},
-    {"n_neighbors": 12, "weights": "distance", "p": 2},
-    {"n_neighbors": 31, "weights": "uniform", "p": 1},
-    {"n_neighbors": 10, "weights": "uniform", "p": 2},
-    {"n_neighbors": 37, "weights": "distance", "p": 2},
-    {"n_neighbors": 26, "weights": "distance", "p": 1},
-    {"n_neighbors": 29, "weights": "distance", "p": 1},
-    {"n_neighbors": 24, "weights": "uniform", "p": 1},
-    {"n_neighbors": 38, "weights": "uniform", "p": 1},
-    {"n_neighbors": 41, "weights": "distance", "p": 2},
-    {"n_neighbors": 15, "weights": "uniform", "p": 1},
-    {"n_neighbors": 36, "weights": "distance", "p": 2},
-    {"n_neighbors": 34, "weights": "distance", "p": 1},
-    {"n_neighbors": 15, "weights": "distance", "p": 2},
-    {"n_neighbors": 34, "weights": "uniform", "p": 1},
-    {"n_neighbors": 19, "weights": "uniform", "p": 1},
-    {"n_neighbors": 18, "weights": "distance", "p": 2},
-    {"n_neighbors": 42, "weights": "distance", "p": 2},
-    {"n_neighbors": 24, "weights": "uniform", "p": 2}
-    ]'''
-    # Convertendo JSON para lista de dicionários
-    dados = json.loads(json_data)
-    old_pop = Population(popSize, n_classes, instances, dados)
+    # json_data = '''[
+    # {"n_neighbors": 14, "weights": "distance", "p": 1},
+    # {"n_neighbors": 18, "weights": "distance", "p": 2},
+    # {"n_neighbors": 12, "weights": "distance", "p": 2},
+    # {"n_neighbors": 31, "weights": "uniform", "p": 1},
+    # {"n_neighbors": 10, "weights": "uniform", "p": 2},
+    # {"n_neighbors": 37, "weights": "distance", "p": 2},
+    # {"n_neighbors": 26, "weights": "distance", "p": 1},
+    # {"n_neighbors": 29, "weights": "distance", "p": 1},
+    # {"n_neighbors": 24, "weights": "uniform", "p": 1},
+    # {"n_neighbors": 38, "weights": "uniform", "p": 1},
+    # {"n_neighbors": 41, "weights": "distance", "p": 2},
+    # {"n_neighbors": 15, "weights": "uniform", "p": 1},
+    # {"n_neighbors": 36, "weights": "distance", "p": 2},
+    # {"n_neighbors": 34, "weights": "distance", "p": 1},
+    # {"n_neighbors": 15, "weights": "distance", "p": 2},
+    # {"n_neighbors": 34, "weights": "uniform", "p": 1},
+    # {"n_neighbors": 19, "weights": "uniform", "p": 1},
+    # {"n_neighbors": 18, "weights": "distance", "p": 2},
+    # {"n_neighbors": 42, "weights": "distance", "p": 2},
+    # {"n_neighbors": 24, "weights": "uniform", "p": 2}
+    # ]'''
+    # # Convertendo JSON para lista de dicionários
+    # dados = json.loads(json_data)
+    # old_pop = Population_KNN(popSize, n_classes, instances, dados)
 
     maxIndiv = old_pop.individuals[0]  # Inicializa com um indivíduo válido
 
@@ -74,7 +74,7 @@ def generation(generations=10, popSize=20, pCross=0.8, pMutation=0.02):
         print("\n")
 
         # Cria uma nova população vazia
-        new_pop = Population(0, n_classes, instances)
+        new_pop = Population_RF(0)
 
         while new_pop.pSize < popSize:
             # Seleciona os pais
