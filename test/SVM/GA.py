@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from population import Population_KNN, Population_RF
+from population import Population_KNN, Population_RF, Population_SVM
 import time
 import numpy as np
 import json
@@ -22,9 +22,9 @@ X_train, X_test, y_train, y_test = train_test_split(
 # TODO: Definir critério de parada
 
 
-def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
+def generation(generations=10, popSize=50, pCross=0.8, pMutation=0.02):
     # Cria uma população inicial
-    old_pop = Population_RF(popSize)
+    old_pop = Population_SVM(popSize)
 
     # json_data = '''[
     # {"n_neighbors": 14, "weights": "distance", "p": 1},
@@ -74,7 +74,7 @@ def generation(generations=10, popSize=30, pCross=0.8, pMutation=0.02):
         print("\n")
 
         # Cria uma nova população vazia
-        new_pop = Population_RF(0)
+        new_pop = Population_SVM(0)
 
         while new_pop.pSize < popSize:
             # Seleciona os pais
