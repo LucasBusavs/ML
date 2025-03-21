@@ -102,10 +102,7 @@ class Individual_RF():
         for param, values in self.hyperparam_dict.items():
             if random.random() < pMutation:
                 while True:
-                    if isinstance(values, tuple):  # Se for intervalo numérico
-                        new_value = self.get_valid_k()
-                    else:  # Se for lista de valores categóricos
-                        new_value = random.choice(values)
+                    new_value = random.choice(values)
 
                     if new_value != self.hyperparam[param]:
                         self.hyperparam[param] = new_value
@@ -130,16 +127,16 @@ class Individual_SVM():
     parent2 = None
 
     hyperparam_dict = {
-        'clf__C': [0.01, 0.1, 1, 10, 100, 1000],
-        'clf__kernel': ['rbf', 'poly', 'sigmoid', 'linear'],
+        'C': [0.01, 0.1, 1, 10, 100, 1000],
+        'kernel': ['rbf', 'poly', 'sigmoid', 'linear'],
         # Só para rbf, poly, sigmoid
-        'clf__gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1, 10],
-        'clf__degree': [2, 3, 4, 5],  # Apenas para poly
+        'gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1, 10],
+        'degree': [2, 3, 4, 5],  # Apenas para poly
         # Para poly e sigmoid
-        'clf__coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
-        'clf__tol': [1e-4, 1e-3, 1e-2],
-        'clf__class_weight': [None, 'balanced'],
-        'clf__max_iter': [1000, 5000, 10000]
+        'coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
+        'tol': [1e-4, 1e-3, 1e-2],
+        'class_weight': [None, 'balanced'],
+        'max_iter': [1000, 5000, 10000]
     }
 
     def __init__(self, C=None, kernel=None, gamma=None, degree=None, coef0=None, tol=None, class_weight=None, max_iter=None):
@@ -148,11 +145,14 @@ class Individual_SVM():
         Caso contrário, gera valores aleatórios.
         """
         self.hyperparam = {
-            'n_estimators': n_estimators if n_estimators is not None else random.choice(self.hyperparam_dict['n_estimators']),
-            'min_samples_split': min_samples_split if min_samples_split is not None else random.choice(self.hyperparam_dict['min_samples_split']),
-            'min_samples_leaf': min_samples_leaf if min_samples_leaf is not None else random.choice(self.hyperparam_dict['min_samples_leaf']),
-            'max_features': max_features if max_features is not None else random.choice(self.hyperparam_dict['max_features']),
-            'criterion': criterion if criterion is not None else random.choice(self.hyperparam_dict['criterion'])
+            'C': C if C is not None else random.choice(self.hyperparam_dict['C']),
+            'kernel': kernel if kernel is not None else random.choice(self.hyperparam_dict['kernel']),
+            'gamma': gamma if gamma is not None else random.choice(self.hyperparam_dict['gamma']),
+            'degree': degree if degree is not None else random.choice(self.hyperparam_dict['degree']),
+            'coef0': coef0 if coef0 is not None else random.choice(self.hyperparam_dict['coef0']),
+            'tol': tol if tol is not None else random.choice(self.hyperparam_dict['tol']),
+            'class_weight': class_weight if class_weight is not None else random.choice(self.hyperparam_dict['class_weight']),
+            'max_iter': max_iter if max_iter is not None else random.choice(self.hyperparam_dict['max_iter'])
         }
 
     def mutation(self, pMutation):
@@ -162,10 +162,7 @@ class Individual_SVM():
         for param, values in self.hyperparam_dict.items():
             if random.random() < pMutation:
                 while True:
-                    if isinstance(values, tuple):  # Se for intervalo numérico
-                        new_value = self.get_valid_k()
-                    else:  # Se for lista de valores categóricos
-                        new_value = random.choice(values)
+                    new_value = random.choice(values)
 
                     if new_value != self.hyperparam[param]:
                         self.hyperparam[param] = new_value
@@ -175,7 +172,7 @@ class Individual_SVM():
         """
         Retorna um modelo KNN com os hiperparâmetros do indivíduo.
         """
-        return RandomForestClassifier(**self.hyperparam)
+        return SVC(**self.hyperparam)
 
     def show_hyperparam(self):
         """

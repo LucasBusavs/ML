@@ -101,10 +101,7 @@ class Individual_RF():
         for param, values in self.hyperparam_dict.items():
             if random.random() < pMutation:
                 while True:
-                    if isinstance(values, tuple):  # Se for intervalo numérico
-                        new_value = self.get_valid_k()
-                    else:  # Se for lista de valores categóricos
-                        new_value = random.choice(values)
+                    new_value = random.choice(values)
 
                     if new_value != self.hyperparam[param]:
                         self.hyperparam[param] = new_value
