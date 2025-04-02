@@ -6,14 +6,14 @@ from sklearn.preprocessing import OrdinalEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 
-# fetch dataset 
-dataset = fetch_ucirepo(id=544) 
+# fetch dataset
+dataset = fetch_ucirepo(id=17)
 
-# # variable information 
+# # variable information
 # print(dataset.variables)
 
-# data (as pandas dataframes) 
-X = dataset.data.features 
+# data (as pandas dataframes)
+X = dataset.data.features
 y = dataset.data.targets
 
 # Encoding Gender
@@ -27,7 +27,8 @@ categorias_ordenadas = ['no', 'yes']
 
 # Enconding family_history_with_overweight
 ordinal_encoder = OrdinalEncoder(categories=[categorias_ordenadas])
-X.loc[:, 'family_history_with_overweight'] = ordinal_encoder.fit_transform(X[['family_history_with_overweight']])
+X.loc[:, 'family_history_with_overweight'] = ordinal_encoder.fit_transform(
+    X[['family_history_with_overweight']])
 
 # Enconding FAVC
 ordinal_encoder = OrdinalEncoder(categories=[categorias_ordenadas])
@@ -54,11 +55,13 @@ ordinal_encoder = OrdinalEncoder(categories=[categorias_ordenadas])
 X.loc[:, 'CALC'] = ordinal_encoder.fit_transform(X[['CALC']])
 
 # HotEnconding MTRANS
-ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [15])], remainder='passthrough')
+ct = ColumnTransformer(
+    transformers=[('encoder', OneHotEncoder(), [15])], remainder='passthrough')
 X = ct.fit_transform(X)
 
 # Encoding target
-categorias_ordenadas = ['Insufficient_Weight', 'Normal_Weight', 'Overweight_Level_I', 'Overweight_Level_II', 'Obesity_Type_I', 'Obesity_Type_II', 'Obesity_Type_III']
+categorias_ordenadas = ['Insufficient_Weight', 'Normal_Weight', 'Overweight_Level_I',
+                        'Overweight_Level_II', 'Obesity_Type_I', 'Obesity_Type_II', 'Obesity_Type_III']
 ordinal_encoder = OrdinalEncoder(categories=[categorias_ordenadas])
 y = ordinal_encoder.fit_transform(y)
 

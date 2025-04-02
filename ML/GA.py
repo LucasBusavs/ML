@@ -4,11 +4,17 @@ from population import Population_KNN, Population_RF, Population_SVM
 import time
 import numpy as np
 import json
+from ucimlrepo import fetch_ucirepo
+
+dataset = fetch_ucirepo(id=891)
+X = dataset.data.features
+y = dataset.data.targets
+y = np.array(y).ravel()
 
 # Carregar dataset
-dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
-X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, -1].values
+# dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
+# X = dataset.iloc[:, :-1].values
+# y = dataset.iloc[:, -1].values
 
 # Contar o número de classes únicas
 n_classes = len(np.unique(y))  # Número de classes
@@ -16,7 +22,8 @@ instances = len(dataset)  # Número de instâncias
 
 # Divisão dos dados
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.25, random_state=42)
+    X, y, test_size=0.25, random_state=42
+)
 
 # Algoritmo Genético Principal
 # TODO: Definir critério de parada

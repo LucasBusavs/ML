@@ -7,12 +7,19 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix
 from score import pipeline_score
 import matplotlib.patches as mpatches
+import numpy as np
+from ucimlrepo import fetch_ucirepo
 
-"""## Importing the dataset"""
+dataset = fetch_ucirepo(id=891)
+X = dataset.data.features
+y = dataset.data.targets
+y = np.array(y).ravel()
 
-dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
-X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, -1].values
+# """## Importing the dataset"""
+
+# dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
+# X = dataset.iloc[:, :-1].values
+# y = dataset.iloc[:, -1].values
 
 """## Splitting the dataset into the Training set and Test set"""
 

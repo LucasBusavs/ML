@@ -1,0 +1,16 @@
+AIDS Clinical Trials Group Study 175:	 https://archive.ics.uci.edu/dataset/890/aids+clinical+trials+group+study+175
+Autistic Spectrum Disorder Screening Data for Children:	https://archive.ics.uci.edu/dataset/419/autistic+spectrum+disorder+screening+data+for+children  
+Breast Cancer Wisconsin (Diagnostic):	https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic
+CDC Diabetes Health Indicators:	https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators
+Contraceptive Method Choice:	https://archive.ics.uci.edu/dataset/30/contraceptive+method+choice
+dados_preprocessados
+Diabetic Retinopathy Debrecen:	https://archive.ics.uci.edu/dataset/329/diabetic+retinopathy+debrecen
+EEG Eye State:	https://archive.ics.uci.edu/dataset/264/eeg+eye+state
+Heart Disease:	https://archive.ics.uci.edu/dataset/45/heart+disease
+Hepatitis C Virus (HCV) for Egyptian patients:	https://archive.ics.uci.edu/dataset/503/hepatitis+c+virus+hcv+for+egyptian+patients
+HIV:	LARA
+Mammographic Mass:	https://archive.ics.uci.edu/dataset/161/mammographic+mass
+Maternal Health Risk:	https://archive.ics.uci.edu/dataset/863/maternal+health+risk
+National Health and Nutrition Health Survey 2013-2014 (NHANES) Age Prediction Subset:	https://archive.ics.uci.edu/dataset/887/national+health+and+nutrition+health+survey+2013-2014+(nhanes)+age+prediction+subset
+Parkinsons:	https://archive.ics.uci.edu/dataset/174/parkinsons
+Sepsis Survival Minimal Clinical Records:	https://archive.ics.uci.edu/dataset/827/sepsis+survival+minimal+clinical+records
