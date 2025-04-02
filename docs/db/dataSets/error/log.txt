@@ -1,0 +1,4 @@
+Autistic Spectrum Disorder Screening Data for Children: Valores categóricos(ValueError)
+Heart Disease: Missing Values(ValueError)
+HIV: Valores categóricos(ValueError)
+Mammographic Mass: Missing Values(ValueError)
