@@ -11,7 +11,7 @@ import time
 dataset_dir = 'docs/db/dataSets'
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ML/Results/gridSearch_SVM_results.csv"
+result_csv_path = "ml/Results/gridSearch_SVM_results.csv"
 
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith('.csv')]
 
