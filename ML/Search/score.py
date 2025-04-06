@@ -39,7 +39,7 @@ def pipeline_score(*args, weights=None, verbose=False):
     # Calcula as métricas
     accuracy = accuracy_score(y_true, y_pred)
     precision, recall, fscore, support = precision_recall_fscore_support(
-        y_true, y_pred, average=None)
+        y_true, y_pred, average=None, zero_division=0)
 
     if verbose:
         print(f"Accuracy: {accuracy:.2f}\n")

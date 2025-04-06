@@ -70,8 +70,8 @@ for dataset in datasets:
         grid_search = GridSearchCV(
             pipeline,
             param_grid=param_grid,
-            cv=5,
             scoring=pipeline_score,
+            cv=2,
             n_jobs=-1,
             verbose=1
         )
