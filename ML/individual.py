@@ -134,7 +134,6 @@ class Individual_SVM():
         'degree': [2, 3, 4, 5],  # Apenas para poly
         # Para poly e sigmoid
         'coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
-        'tol': [1e-4, 1e-3, 1e-2],
         'class_weight': [None, 'balanced'],
         'max_iter': [1000, 5000, 10000]
     }

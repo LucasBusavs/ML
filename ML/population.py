@@ -3,7 +3,7 @@ import numpy as np
 from individual import Individual_KNN, Individual_RF, Individual_SVM
 from sklearn.preprocessing import StandardScaler
 from score import pipeline_score
-from sklearn.exceptions import ConvergenceWarning, UndefinedMetricWarning
+from sklearn.exceptions import ConvergenceWarning
 import warnings
 
 
@@ -248,7 +248,6 @@ class Population_SVM:
         X_test = sc.transform(X_test)
 
         warnings.simplefilter("ignore", ConvergenceWarning)
-        warnings.simplefilter("ignore", UndefinedMetricWarning)
 
         for ind in self.individuals:
             model = ind.get_model()

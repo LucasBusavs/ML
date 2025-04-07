@@ -11,9 +11,29 @@ import time
 dataset_dir = 'docs/db/dataSets'
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ml/Results/gridSearch_SVM_results.csv"
+result_csv_path = "ml/Results/gridSearch_SVM_tolTest.csv"
 
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith('.csv')]
+
+# Criar pipeline com normalização
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),  # Normaliza os dados
+    ('clf', SVC())  # Modelo SVM com kernel variado
+])
+
+# Definir espaço de busca dos hiperparâmetros
+param_grid = {
+    'clf__C': [0.01, 0.1, 1, 10, 100, 1000],
+    'clf__kernel': ['rbf', 'poly', 'sigmoid', 'linear'],
+    # Só para rbf, poly, sigmoid
+    'clf__gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1, 10],
+    'clf__degree': [2, 3, 4, 5],  # Apenas para poly
+    # Para poly e sigmoid
+    'clf__coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
+    'clf__class_weight': [None, 'balanced'],
+    'clf__max_iter': [1000, 5000, 10000]
+}
+
 
 # Se o arquivo de resultados ainda não existir, cria com cabeçalho
 if not os.path.exists(result_csv_path):
@@ -21,7 +41,8 @@ if not os.path.exists(result_csv_path):
                  "test_score", "execution_time"]).to_csv(result_csv_path, index=False)
 
 for dataset in datasets:
-    if dataset != "CDC Diabetes Health Indicators.csv":
+    if dataset == "EEG Eye State.csv":
+        print(f"\n\nIniciando o GridSearch para o dataset: {dataset}")
         dataset_path = os.path.join(dataset_dir, dataset)
 
         # Carregar o dataset
@@ -34,38 +55,6 @@ for dataset in datasets:
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.25, random_state=42)
 
-        # Criar pipeline com normalização
-        pipeline = Pipeline([
-            ('scaler', StandardScaler()),  # Normaliza os dados
-            ('clf', SVC())  # Modelo SVM com kernel variado
-        ])
-
-        # Definir espaço de busca dos hiperparâmetros
-        param_grid = {
-            'clf__C': [0.01, 0.1, 1, 10, 100, 1000],
-            'clf__kernel': ['rbf', 'poly', 'sigmoid', 'linear'],
-            # Só para rbf, poly, sigmoid
-            'clf__gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1, 10],
-            'clf__degree': [2, 3, 4, 5],  # Apenas para poly
-            # Para poly e sigmoid
-            'clf__coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
-            'clf__tol': [1e-4, 1e-3, 1e-2],
-            'clf__class_weight': [None, 'balanced'],
-            'clf__max_iter': [1000, 5000, 10000]
-        }
-
-        # # Filtrar combinações inválidas
-        # valid_param_grid = []
-
-        # for params in ParameterGrid(param_grid):
-        #     if params['clf__kernel'] == 'linear' and params['clf__gamma'] not in ['scale', 'auto']:
-        #         continue  # gamma não é usado em SVM linear
-        #     if params['clf__kernel'] != 'poly' and params['clf__degree'] != 3:
-        #         continue  # degree só é válido para poly
-        #     if params['clf__kernel'] not in ['poly', 'sigmoid'] and params['clf__coef0'] != 0.0:
-        #         continue  # coef0 só afeta poly e sigmoid
-        #     valid_param_grid.append(params)
-
         # Criar e rodar o GridSearch
         grid_search = GridSearchCV(
             pipeline,
@@ -73,7 +62,7 @@ for dataset in datasets:
             scoring=pipeline_score,
             cv=2,
             n_jobs=-1,
-            verbose=1
+            verbose=2
         )
 
         # Início do tempo de execução
