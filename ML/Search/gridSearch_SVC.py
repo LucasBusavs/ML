@@ -7,11 +7,13 @@ import pandas as pd
 from score import pipeline_score
 import os
 import time
+from sklearn.exceptions import ConvergenceWarning
+import warnings
 
 dataset_dir = 'docs/db/dataSets'
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ml/Results/gridSearch_SVM_tolTest.csv"
+result_csv_path = "ml/Results/gridSearch_SVM_max1000Test.csv"
 
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith('.csv')]
 
@@ -31,14 +33,14 @@ param_grid = {
     # Para poly e sigmoid
     'clf__coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
     'clf__class_weight': [None, 'balanced'],
-    'clf__max_iter': [1000, 5000, 10000]
+    'clf__max_iter': [1000]
 }
 
 
 # Se o arquivo de resultados ainda não existir, cria com cabeçalho
 if not os.path.exists(result_csv_path):
     pd.DataFrame(columns=["dataset", "best_params", "train_score",
-                 "test_score", "execution_time"]).to_csv(result_csv_path, index=False)
+                 "test_score", "execution_time", "warning_count"]).to_csv(result_csv_path, index=False)
 
 for dataset in datasets:
     if dataset == "EEG Eye State.csv":
@@ -61,14 +63,21 @@ for dataset in datasets:
             param_grid=param_grid,
             scoring=pipeline_score,
             cv=2,
-            n_jobs=-1,
+            n_jobs=1,
             verbose=2
         )
 
         # Início do tempo de execução
         start_time = time.time()
-        # Executando o GridSearchCV
-        grid_search.fit(X_train, y_train)
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always", category=ConvergenceWarning)
+            # Executando o GridSearchCV
+            grid_search.fit(X_train, y_train)
+            convergence_warning_count = sum(
+                1 for warning in w if issubclass(warning.category, ConvergenceWarning)
+            )
+
         end_time = time.time()
         elapsed_time = end_time - start_time
 
@@ -95,7 +104,8 @@ for dataset in datasets:
             "best_params": str(best_params),
             "train_score": best_score,
             "test_score": final_score,
-            "execution_time": elapsed_time
+            "execution_time": elapsed_time,
+            "warning_count": convergence_warning_count
         }
 
         # Adicionar ao arquivo CSV imediatamente
