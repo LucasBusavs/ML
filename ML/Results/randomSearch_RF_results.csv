@@ -1,0 +1,13 @@
+dataset,best_params,train_score,test_score,execution_time
+AIDS Clinical Trials Group Study 175.csv,"{'n_estimators': 180, 'min_samples_split': 10, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'criterion': 'entropy'}",6.019449992562876,5.973982323983286,15.268913507461548
+Breast Cancer Wisconsin (Diagnostic).csv,"{'n_estimators': 170, 'min_samples_split': 5, 'min_samples_leaf': 1, 'max_features': 'sqrt', 'criterion': 'entropy'}",6.79128353320276,6.793080587939608,9.202199220657349
+CDC Diabetes Health Indicators.csv,"{'n_estimators': 180, 'min_samples_split': 10, 'min_samples_leaf': 1, 'max_features': 'log2', 'criterion': 'gini'}",4.612375548444059,4.599198587996871,1102.0861313343048
+Contraceptive Method Choice.csv,"{'n_estimators': 140, 'min_samples_split': 20, 'min_samples_leaf': 8, 'max_features': 'sqrt', 'criterion': 'entropy'}",5.43032491715963,5.746448070792637,8.532728672027588
+dados_preprocessados.csv,"{'n_estimators': 170, 'min_samples_split': 5, 'min_samples_leaf': 1, 'max_features': 'log2', 'criterion': 'entropy'}",20.87132295989535,20.707309198286147,14.167331457138062
+Diabetic Retinopathy Debrecen.csv,"{'n_estimators': 70, 'min_samples_split': 20, 'min_samples_leaf': 4, 'max_features': 'sqrt', 'criterion': 'entropy'}",4.913273237370792,5.072196520356541,12.70187258720398
+EEG Eye State.csv,"{'n_estimators': 170, 'min_samples_split': 5, 'min_samples_leaf': 1, 'max_features': 'log2', 'criterion': 'entropy'}",6.449111944883145,6.4766900510533105,81.56071925163269
+Hepatitis C Virus (HCV) for Egyptian patients.csv,"{'n_estimators': 190, 'min_samples_split': 5, 'min_samples_leaf': 4, 'max_features': 'log2', 'criterion': 'entropy'}",3.1935335973395516,4.047422827896582,15.717506885528564
+Maternal Health Risk.csv,"{'n_estimators': 170, 'min_samples_split': 5, 'min_samples_leaf': 1, 'max_features': 'log2', 'criterion': 'entropy'}",8.184604956362193,8.004531103449631,7.739213228225708
+National Health and Nutrition Health Survey 2013-2014 (NHANES) Age Prediction Subset.csv,"{'n_estimators': 170, 'min_samples_split': 2, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'criterion': 'entropy'}",4.573145567833722,4.391005951865851,12.88866639137268
+Parkinsons.csv,"{'n_estimators': 30, 'min_samples_split': 2, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'criterion': 'entropy'}",6.3589991728264454,5.958997020976317,7.705662965774536
+Sepsis Survival Minimal Clinical Records.csv,"{'n_estimators': 10, 'min_samples_split': 15, 'min_samples_leaf': 1, 'max_features': 'log2', 'criterion': 'gini'}",3.9670593620544254,4.312976194714064,113.26497864723206

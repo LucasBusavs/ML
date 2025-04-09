@@ -1,11 +1,10 @@
-import numpy as np
-import pandas as pd
+from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
+import pandas as pd
 from score import pipeline_score
-import numpy as np
 import os
 import time
 
@@ -13,10 +12,29 @@ import time
 dataset_dir = "docs/db/dataSets"
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ml/Results/randomSearch_KNN_results.csv"
+result_csv_path = "ml/Results/randomSearch_SVM_results.csv"
 
 # Listar todos os arquivos CSV na pasta
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith(".csv")]
+
+# Criar pipeline com normalização
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),  # Normaliza os dados
+    ('clf', SVC())  # Modelo SVM com kernel variado
+])
+
+# Definir espaço de busca dos hiperparâmetros
+param_grid = {
+    'clf__C': [0.01, 0.1, 1, 10, 100, 1000],
+    'clf__kernel': ['rbf', 'poly', 'sigmoid', 'linear'],
+    # Só para rbf, poly, sigmoid
+    'clf__gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1, 10],
+    'clf__degree': [2, 3, 4, 5],  # Apenas para poly
+    # Para poly e sigmoid
+    'clf__coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
+    'clf__class_weight': [None, 'balanced'],
+    'clf__max_iter': [4000]
+}
 
 # Se o arquivo de resultados ainda não existir, cria com cabeçalho
 if not os.path.exists(result_csv_path):
@@ -40,34 +58,18 @@ for dataset in datasets:
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.25, random_state=42)
 
-    # Contabilização de labels
-    qntLabel = len(np.unique(y))
-
-    print(f"Quantidade de labels: {qntLabel}")
-
-    # Definir o modelo KNN
-    knn = KNeighborsClassifier()
-
-    # Definir os hiperparâmetros para otimização
-    param_grid = {
-        'n_neighbors':  list(range(qntLabel + 1, 101)),  # Número de vizinhos
-        'weights': ['uniform', 'distance'],  # Peso das amostras
-        'p': [1, 2]
-    }
-
-    # Criar RandomizedSearchCV
+    # Criar e rodar o GridSearch
     random_search = RandomizedSearchCV(
-        estimator=knn,
+        pipeline,
         param_distributions=param_grid,
-        n_iter=20,  # Número de amostras aleatórias a serem testadas
-        scoring=pipeline_score,  # Métrica de avaliação
-        cv=5,  # Validação cruzada com 5 folds
+        n_iter=50,
+        scoring=pipeline_score,
+        cv=2,
         random_state=42,
         n_jobs=-1,
         verbose=2
     )
 
-    # Medir o tempo de execução do GridSearch
     start_time = time.time()
     # Ajustar o modelo
     random_search.fit(X_train, y_train)
@@ -79,8 +81,8 @@ for dataset in datasets:
     best_score = random_search.best_score_
 
     # Avaliar no conjunto de teste
-    best_knn = random_search.best_estimator_
-    y_pred = best_knn.predict(X_test)
+    best_rf = random_search.best_estimator_
+    y_pred = best_rf.predict(X_test)
     final_score = pipeline_score(y_test, y_pred)
 
     print("Melhores hiperparâmetros:", best_params)
