@@ -1,0 +1,2 @@
+dataset,best_params,train_score,test_score,execution_time,warning_count
+EEG Eye State.csv,"{'clf__C': 10, 'clf__class_weight': None, 'clf__coef0': -1.0, 'clf__degree': 2, 'clf__gamma': 1, 'clf__kernel': 'rbf', 'clf__max_iter': 3000}",6.480107707231609,5.775296813537506,4320.2544367313385,1

@@ -13,7 +13,7 @@ import warnings
 dataset_dir = 'docs/db/dataSets'
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ml/Results/gridSearch_SVM_max1000Test.csv"
+result_csv_path = "ml/Results/gridSearch_SVM_max3000Test2.csv"
 
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith('.csv')]
 
@@ -33,7 +33,7 @@ param_grid = {
     # Para poly e sigmoid
     'clf__coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
     'clf__class_weight': [None, 'balanced'],
-    'clf__max_iter': [1000]
+    'clf__max_iter': [3000]
 }
 
 
@@ -63,7 +63,7 @@ for dataset in datasets:
             param_grid=param_grid,
             scoring=pipeline_score,
             cv=2,
-            n_jobs=1,
+            n_jobs=-1,
             verbose=2
         )
 

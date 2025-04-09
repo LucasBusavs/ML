@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Dados dos arquivos
-max_iters = [1000, 3000, 5000, 7000, 10000]
+max_iters = [1000, 3000, 4000, 5000, 7000, 10000]
 csvs = [f"ml/Results/gridSearch_SVM_max{it}Test.csv" for it in max_iters]
 
 # Carregar todos os CSVs
