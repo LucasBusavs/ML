@@ -3,11 +3,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
-from sklearn.datasets import load_iris
-
-# data = load_iris()
-# X = data.data
-# y = data.target
 
 dataset = pd.read_csv('docs/db/dados_preprocessados.csv')
 X = dataset.iloc[:, :-1].values

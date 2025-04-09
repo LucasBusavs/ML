@@ -13,7 +13,7 @@ import warnings
 dataset_dir = 'docs/db/dataSets'
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ml/Results/gridSearch_SVM_max3000Test2.csv"
+result_csv_path = "ml/Results/gridSearch_SVM_results.csv"
 
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith('.csv')]
 
@@ -33,17 +33,17 @@ param_grid = {
     # Para poly e sigmoid
     'clf__coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
     'clf__class_weight': [None, 'balanced'],
-    'clf__max_iter': [3000]
+    'clf__max_iter': [4000]
 }
 
 
 # Se o arquivo de resultados ainda não existir, cria com cabeçalho
 if not os.path.exists(result_csv_path):
     pd.DataFrame(columns=["dataset", "best_params", "train_score",
-                 "test_score", "execution_time", "warning_count"]).to_csv(result_csv_path, index=False)
+                 "test_score", "execution_time"]).to_csv(result_csv_path, index=False)
 
 for dataset in datasets:
-    if dataset == "EEG Eye State.csv":
+    if dataset != "CDC Diabetes Health Indicators.csv":
         print(f"\n\nIniciando o GridSearch para o dataset: {dataset}")
         dataset_path = os.path.join(dataset_dir, dataset)
 
@@ -70,13 +70,15 @@ for dataset in datasets:
         # Início do tempo de execução
         start_time = time.time()
 
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always", category=ConvergenceWarning)
-            # Executando o GridSearchCV
-            grid_search.fit(X_train, y_train)
-            convergence_warning_count = sum(
-                1 for warning in w if issubclass(warning.category, ConvergenceWarning)
-            )
+        # Executando o GridSearchCV
+        grid_search.fit(X_train, y_train)
+
+        # with warnings.catch_warnings(record=True) as w:
+        #     warnings.simplefilter("always", category=ConvergenceWarning)
+
+        #     convergence_warning_count = sum(
+        #         1 for warning in w if issubclass(warning.category, ConvergenceWarning)
+        #     )
 
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -85,9 +87,9 @@ for dataset in datasets:
         best_score = grid_search.best_score_
 
         # Treinando o melhor modelo
-        best_rf = grid_search.best_estimator_
+        best_svm = grid_search.best_estimator_
         # Avaliando no conjunto de teste
-        y_pred = best_rf.predict(X_test)
+        y_pred = best_svm.predict(X_test)
         final_score = pipeline_score(y_test, y_pred)
 
         print(f"\nMelhores parâmetros: {best_params}")
@@ -105,7 +107,7 @@ for dataset in datasets:
             "train_score": best_score,
             "test_score": final_score,
             "execution_time": elapsed_time,
-            "warning_count": convergence_warning_count
+            # "warning_count": convergence_warning_count
         }
 
         # Adicionar ao arquivo CSV imediatamente
