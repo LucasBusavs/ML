@@ -11,7 +11,7 @@ import time
 dataset_dir = "docs/db/dataSets"
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ml/Results/randomSearch_RF_results.csv"
+result_csv_path = "ml/Results/randomSearch_RF_SEQ_results.csv"
 
 # Listar todos os arquivos CSV na pasta
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith(".csv")]
@@ -56,11 +56,11 @@ for dataset in datasets:
     random_search = RandomizedSearchCV(
         estimator=rf,
         param_distributions=param_grid,
-        n_iter=50,  # Número de amostras aleatórias a serem testadas
+        n_iter=30,  # Número de amostras aleatórias a serem testadas
         scoring=pipeline_score,  # Métrica de avaliação
         cv=5,  # Validação cruzada com 5 folds
         random_state=42,
-        n_jobs=-1,
+        n_jobs=1,
         verbose=2
     )
 

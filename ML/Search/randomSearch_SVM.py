@@ -12,7 +12,7 @@ import time
 dataset_dir = "docs/db/dataSets"
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ml/Results/randomSearch_SVM_results.csv"
+result_csv_path = "ml/Results/randomSearch_SVM_SEQ_results.csv"
 
 # Listar todos os arquivos CSV na pasta
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith(".csv")]
@@ -66,7 +66,7 @@ for dataset in datasets:
         scoring=pipeline_score,
         cv=2,
         random_state=42,
-        n_jobs=-1,
+        n_jobs=1,
         verbose=2
     )
 
