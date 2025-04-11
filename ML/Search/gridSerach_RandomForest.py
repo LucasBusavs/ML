@@ -10,7 +10,7 @@ import time
 dataset_dir = 'docs/db/dataSets'
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ML/Results/gridSearch_RF2_results.csv"
+result_csv_path = "ML/Results/gridSearch_RF3_results.csv"
 
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith('.csv')]
 
@@ -48,7 +48,6 @@ for dataset in datasets:
             # Número de features por divisão
             'max_features': ['sqrt', 'log2', None],
             'criterion': ['gini', 'entropy'],  # Critério de divisão
-            'class_weight': [None, 'balanced', 'balanced_subsample'],
             'n_jobs': [-1],  # Usar todos os núcleos disponíveis
         }
 
