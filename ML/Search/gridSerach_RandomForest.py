@@ -20,7 +20,7 @@ if not os.path.exists(result_csv_path):
                  "test_score", "execution_time"]).to_csv(result_csv_path, index=False)
 
 for dataset in datasets:
-    if dataset != "CDC Diabetes Health Indicators.csv" and dataset != "AIDS Clinical Trials Group Study 175.csv" and dataset != "Breast Cancer Wisconsin (Diagnostic).csv":
+    if dataset == "AIDS Clinical Trials Group Study 175.csv" or dataset == "Breast Cancer Wisconsin (Diagnostic).csv":
         dataset_path = os.path.join(dataset_dir, dataset)
 
         # Carregar o dataset
