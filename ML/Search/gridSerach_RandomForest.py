@@ -48,6 +48,7 @@ for dataset in datasets:
             # Número de features por divisão
             'max_features': ['sqrt', 'log2', None],
             'criterion': ['gini', 'entropy'],  # Critério de divisão
+            'class_weight': [None, 'balanced', 'balanced_subsample'],
             'n_jobs': [-1],  # Usar todos os núcleos disponíveis
         }
 

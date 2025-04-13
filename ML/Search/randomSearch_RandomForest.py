@@ -11,7 +11,7 @@ import time
 dataset_dir = "docs/db/dataSets"
 
 # Caminho do arquivo CSV onde os resultados serão armazenados
-result_csv_path = "ml/Results/randomSearch_RF_SEQ_results.csv"
+result_csv_path = "ml/Results/randomSearch_RF_results.csv"
 
 # Listar todos os arquivos CSV na pasta
 datasets = [f for f in os.listdir(dataset_dir) if f.endswith(".csv")]
@@ -38,15 +38,17 @@ for dataset in datasets:
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.25, random_state=42)
 
-    # Definição do grid de hiperparâmetros
     param_grid = {
         'n_estimators': list(range(10, 200, 10)),   # Quantidade de árvores
         # Mínimo de amostras para dividir um nó
         'min_samples_split': [2, 5, 10, 15, 20],
         # Mínimo de amostras em uma folha
         'min_samples_leaf': [1, 2, 4, 8, 16],
-        'max_features': ['sqrt', 'log2'],  # Número de features por divisão
+        # Número de features por divisão
+        'max_features': ['sqrt', 'log2', None],
         'criterion': ['gini', 'entropy'],  # Critério de divisão
+        'class_weight': [None, 'balanced', 'balanced_subsample'],
+        'n_jobs': [-1],  # Usar todos os núcleos disponíveis
     }
 
     # Definição do modelo
@@ -60,7 +62,7 @@ for dataset in datasets:
         scoring=pipeline_score,  # Métrica de avaliação
         cv=5,  # Validação cruzada com 5 folds
         random_state=42,
-        n_jobs=1,
+        n_jobs=-1,
         verbose=2
     )
 
