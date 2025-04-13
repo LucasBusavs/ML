@@ -2,6 +2,7 @@ import random
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
 
 class Individual_KNN():
@@ -73,16 +74,16 @@ class Individual_RF():
     parent2 = None
 
     hyperparam_dict = {
-        'n_estimators': list(range(10, 200, 10)),   # Quantidade de árvores
-        # Mínimo de amostras para dividir um nó
+        'n_estimators': list(range(10, 200, 10)),
         'min_samples_split': [2, 5, 10, 15, 20],
-        # Mínimo de amostras em uma folha
         'min_samples_leaf': [1, 2, 4, 8, 16],
-        'max_features': ['sqrt', 'log2'],  # Número de features por divisão
-        'criterion': ['gini', 'entropy'],  # Critério de divisão
+        'max_features': ['sqrt', 'log2', None],
+        'criterion': ['gini', 'entropy'],
+        'class_weight': [None, 'balanced', 'balanced_subsample'],
+        'n_jobs': -1,
     }
 
-    def __init__(self, n_estimators=None, min_samples_split=None, min_samples_leaf=None, max_features=None, criterion=None):
+    def __init__(self, n_estimators=None, min_samples_split=None, min_samples_leaf=None, max_features=None, criterion=None, class_weight=None, n_jobs=None):
         """
         Inicializa um indivíduo. Se os hiperparâmetros forem passados, utiliza-os. 
         Caso contrário, gera valores aleatórios.
@@ -92,7 +93,9 @@ class Individual_RF():
             'min_samples_split': min_samples_split if min_samples_split is not None else random.choice(self.hyperparam_dict['min_samples_split']),
             'min_samples_leaf': min_samples_leaf if min_samples_leaf is not None else random.choice(self.hyperparam_dict['min_samples_leaf']),
             'max_features': max_features if max_features is not None else random.choice(self.hyperparam_dict['max_features']),
-            'criterion': criterion if criterion is not None else random.choice(self.hyperparam_dict['criterion'])
+            'criterion': criterion if criterion is not None else random.choice(self.hyperparam_dict['criterion']),
+            'class_weight': class_weight if class_weight is not None else random.choice(self.hyperparam_dict['class_weight']),
+            'n_jobs': n_jobs if n_jobs is not None else self.hyperparam_dict['n_jobs']
         }
 
     def mutation(self, pMutation):
@@ -100,7 +103,7 @@ class Individual_RF():
         Realiza a mutação de um indivíduo com probabilidade pMutation.
         """
         for param, values in self.hyperparam_dict.items():
-            if random.random() < pMutation:
+            if param != 'n_jobs' and random.random() < pMutation:
                 while True:
                     new_value = random.choice(values)
 
@@ -135,10 +138,10 @@ class Individual_SVM():
         # Para poly e sigmoid
         'coef0': [-1.0, -0.5, -0.1, 0.0, 0.1, 0.5, 1.0],
         'class_weight': [None, 'balanced'],
-        'max_iter': [1000, 5000, 10000]
+        'max_iter': 4000
     }
 
-    def __init__(self, C=None, kernel=None, gamma=None, degree=None, coef0=None, tol=None, class_weight=None, max_iter=None):
+    def __init__(self, C=None, kernel=None, gamma=None, degree=None, coef0=None, class_weight=None, max_iter=None):
         """
         Inicializa um indivíduo. Se os hiperparâmetros forem passados, utiliza-os. 
         Caso contrário, gera valores aleatórios.
@@ -149,9 +152,62 @@ class Individual_SVM():
             'gamma': gamma if gamma is not None else random.choice(self.hyperparam_dict['gamma']),
             'degree': degree if degree is not None else random.choice(self.hyperparam_dict['degree']),
             'coef0': coef0 if coef0 is not None else random.choice(self.hyperparam_dict['coef0']),
-            'tol': tol if tol is not None else random.choice(self.hyperparam_dict['tol']),
             'class_weight': class_weight if class_weight is not None else random.choice(self.hyperparam_dict['class_weight']),
-            'max_iter': max_iter if max_iter is not None else random.choice(self.hyperparam_dict['max_iter'])
+            'max_iter': max_iter if max_iter is not None else self.hyperparam_dict['max_iter']
+        }
+
+    def mutation(self, pMutation):
+        """
+        Realiza a mutação de um indivíduo com probabilidade pMutation.
+        """
+        for param, values in self.hyperparam_dict.items():
+            if param != 'max_iter' and random.random() < pMutation:
+                while True:
+                    new_value = random.choice(values)
+
+                    if new_value != self.hyperparam[param]:
+                        self.hyperparam[param] = new_value
+                        break
+
+    def get_model(self):
+        """
+        Retorna um modelo KNN com os hiperparâmetros do indivíduo.
+        """
+        return SVC(**self.hyperparam)
+
+    def show_hyperparam(self):
+        """
+        Mostra os hiperparâmetros do indivíduo.
+        """
+        print(self.hyperparam)
+
+
+class Individual_DT():
+    fitness = None
+    parent1 = None
+    parent2 = None
+
+    hyperparam_dict = {
+        'splitter': ['best', 'random'],
+        'min_samples_split': [2, 5, 10, 15, 20],
+        'min_samples_leaf': [1, 2, 4, 8, 16],
+        'max_features': ['sqrt', 'log2'],
+        'criterion': ['gini', 'entropy'],
+        'class_weight': [None, 'balanced'],
+    }
+
+    def __init__(self, splitter=None, min_samples_split=None, min_samples_leaf=None, max_features=None, criterion=None, class_weight=None):
+        """
+        Inicializa um indivíduo. Se os hiperparâmetros forem passados, utiliza-os. 
+        Caso contrário, gera valores aleatórios.
+        """
+        self.hyperparam = {
+            'splitter': splitter if splitter is not None else random.choice(self.hyperparam_dict['splitter']),
+            'min_samples_split': min_samples_split if min_samples_split is not None else random.choice(self.hyperparam_dict['min_samples_split']),
+            'min_samples_leaf': min_samples_leaf if min_samples_leaf is not None else random.choice(self.hyperparam_dict['min_samples_leaf']),
+            'max_features': max_features if max_features is not None else random.choice(self.hyperparam_dict['max_features']),
+            'criterion': criterion if criterion is not None else random.choice(self.hyperparam_dict['criterion']),
+            'class_weight': class_weight if class_weight is not None else random.choice(self.hyperparam_dict['class_weight'])
         }
 
     def mutation(self, pMutation):
@@ -171,7 +227,7 @@ class Individual_SVM():
         """
         Retorna um modelo KNN com os hiperparâmetros do indivíduo.
         """
-        return SVC(**self.hyperparam)
+        return DecisionTreeClassifier(**self.hyperparam)
 
     def show_hyperparam(self):
         """
