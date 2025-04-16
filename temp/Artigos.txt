@@ -1,0 +1,43 @@
+https://dl.acm.org/doi/pdf/10.1145/2908812.2908918
+https://www.researchgate.net/profile/Matthias-Feurer/publication/342801746_Auto-Sklearn_20_The_Next_Generation/links/5f7c334aa6fdccfd7b4a87de/Auto-Sklearn-20-The-Next-Generation.pdf
+https://arxiv.org/pdf/2007.04074
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9914830 -> 5 pg -> SVM max iter
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10053442 -> 6 pg -> AutoML com GA para classificação de imagem aplicado com NN-> Fitness com accuracy apenas
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8789865 -> 6 pg -> Análise e descrição sobre AutoML's (Excelente para ref)
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9999285 -> 12 pg -> AutoML com GA para LESM em contexto de RNN
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10184850 -> 13 pg -> AutoML com meta learning
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9996560 -> 10 pg -> AutoML com PGA para rede neural (Muito bom artigo)
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9033810 -> 6 pg -> Review de AutoML (pode ser interessante pra alguma frase no inicio do artigo, mas nada mais)
+https://www.sciencedirect.com/science/article/pii/S0933365719310437 -> 12 pg -> AutoML State of art and opportunities for healtcare (possibilidade de algumas frases)
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9534091 -> 8 pg -> Comparação entre AutoML
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8995391 -> 9 pg -> Comparação entre AutoML
+
+https://link.springer.com/chapter/10.1007/978-3-031-22018-0_28
+https://link.springer.com/article/10.1007/s41060-022-00309-0
+https://link.springer.com/chapter/10.1007/978-3-031-27815-0_18
+
+// A LER
+
+https://www.jmlr.org/papers/volume25/22-0493/22-0493.pdf -> 65 pg -> Benchmark de AutoML
+https://arxiv.org/pdf/2305.02499 -> 11 pg -> AutoML com GPT
+https://www.automl.org/wp-content/uploads/2020/07/AutoML_2020_paper_59.pdf -> 6 pg -> AutoML geral
+https://www.nature.com/articles/s41598-023-32027-3 -> 16 pg -> AutoML com EA para HPO
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9321731 -> 18 pg -> Análise de AutoML
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9308582 -> 8 pg -> AutoML com GP
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9431251 -> 5 pg -> GA para seleção de features
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9231486 -> 6 pg -> CNN com GA para Regressão
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10503202 -> 6 pg -> AutoML com GA alterado com BO para ANN em sistemas embarcados
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9893313 -> 12 pg -> DL com EA
+
+
+// ABAS
+
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10053442
+https://ieeexplore.ieee.org/document/10503202
+https://ieeexplore.ieee.org/document/8789865
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9996560
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9534091
+https://www.jmlr.org/papers/volume25/22-0493/22-0493.pdf
+https://ieeexplore.ieee.org/document/9033810
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9308582
+https://www.researchgate.net/publication/381447239_Hyperparameter_optimization_Classics_acceleration_online_multi-objective_and_tools

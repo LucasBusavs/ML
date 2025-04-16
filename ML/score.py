@@ -67,6 +67,7 @@ def pipeline_score(*args, weights=None, verbosity=False):
         y_true, y_pred, beta=beta, average=None, zero_division=0
     )
 
+    # Print metrics if verbosity is enabled
     if verbosity:
         print(f"Accuracy: {accuracy:.2f}\n")
 
