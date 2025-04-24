@@ -5,6 +5,7 @@ import time
 import numpy as np
 import json
 from score import pipeline_score
+import os
 
 
 # Algoritmo Genético Principal
@@ -75,7 +76,7 @@ def generation_DT(generations=10, popSize=20, pCross=0.8, pMutation=0.02, json_d
     maxIndiv = old_pop.individuals[0]  # Inicializa com um indivíduo válido
 
     for gen in range(generations):
-        old_pop.fitness_function(X_train, X_test, y_train, y_test)
+        old_pop.fitness_function(X_train, y_train)
         # Calcula o fitness da população
         print(f"Geração {gen+1}")
         print(old_pop.statistics())
@@ -128,7 +129,7 @@ def generation_RF(generations=10, popSize=30, pCross=0.8, pMutation=0.02, json_d
     maxIndiv = old_pop.individuals[0]  # Inicializa com um indivíduo válido
 
     for gen in range(generations):
-        old_pop.fitness_function(X_train, X_test, y_train, y_test)
+        old_pop.fitness_function(X_train, y_train)
         # Calcula o fitness da população
         print(f"Geração {gen+1}")
         print(old_pop.statistics())
@@ -181,7 +182,7 @@ def generation_SVM(generations=10, popSize=50, pCross=0.8, pMutation=0.02, json_
     maxIndiv = old_pop.individuals[0]  # Inicializa com um indivíduo válido
 
     for gen in range(generations):
-        old_pop.fitness_function(X_train, X_test, y_train, y_test)
+        old_pop.fitness_function(X_train, y_train)
         # Calcula o fitness da população
         print(f"Geração {gen+1}")
         print(old_pop.statistics())
@@ -289,26 +290,38 @@ def automl():
 
 
 if __name__ == '__main__':
-    # Carregar dataset
-    dataset = pd.read_csv('docs/db/dataSets/dados_preprocessados.csv')
-    X = dataset.iloc[:, :-1].values
-    y = dataset.iloc[:, -1].values
+    # Listar todos os arquivos CSV na pasta
+    datasets = [f for f in os.listdir(
+        'docs/db/dataSets') if f.endswith(".csv")]
 
-    # Contar o número de classes únicas
-    n_classes = len(np.unique(y))  # Número de classes
-    instances = len(dataset)  # Número de instâncias
+    for dataset in datasets:
+        if dataset != "CDC Diabetes Health Indicators.csv" and dataset != "EEG Eye State.csv" and dataset != "Sepsis Survival Minimal Clinical Records.csv":
+            print(f"\nProcessando: {dataset}")
 
-    # Divisão dos dados
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.25, random_state=42
-    )
+            # Carregar o dataset
+            df = pd.read_csv(f'docs/db/dataSets/{dataset}')
+            X = df.iloc[:, :-1].values
+            y = df.iloc[:, -1].values
 
-    print("Executando algoritmo genético para KNN\n")
-    bestInd_KNN = generation_KNN()
-    print("Melhor indivíduo KNN encontrado:")
-    bestInd_KNN.show_hyperparam()
-    print(f"Fitness treino: {bestInd_KNN.fitness}")
-    model = bestInd_KNN.get_model()
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    print(f"Fitness teste: {pipeline_score(y_test, y_pred)}\n")
+            # Contar o número de classes únicas
+            n_classes = len(np.unique(y))  # Número de classes
+            instances = len(dataset)  # Número de instâncias
+
+            # Divisão dos dados
+            X_train, X_test, y_train, y_test = train_test_split(
+                X, y, test_size=0.25, random_state=42
+            )
+
+            print("Executando algoritmo genético para RF\n")
+
+            bestInd_RF = generation_RF()
+
+            print("Melhor indivíduo RF encontrado:")
+            bestInd_RF.show_hyperparam()
+            print(f"Fitness treino: {bestInd_RF.fitness}")
+
+            model = bestInd_RF.get_model()
+            model.fit(X_train, y_train)
+            y_pred = model.predict(X_test)
+
+            print(f"Fitness teste: {pipeline_score(y_test, y_pred)}\n")

@@ -3,7 +3,7 @@ import numpy as np
 from individual import Individual_KNN, Individual_RF, Individual_SVM, Individual_DT
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.preprocessing import StandardScaler
-from score import pipeline_score_scorer, pipeline_score
+from score import pipeline_score_scorer
 from sklearn.exceptions import ConvergenceWarning
 import warnings
 
@@ -145,18 +145,27 @@ class Population_RF:
         else:
             self.individuals = [Individual_RF(**ind) for ind in individuals]
 
-    def fitness_function(self, X_train, X_test, y_train, y_test):
+    def fitness_function(self, X_train, y_train, n_splits=5):
         """
         Avalia o fitness de todos os indivíduos da população.
 
         :param X_train, y_train: Dados de treino.
         :param X_test, y_test: Dados de validação.
         """
+
+        cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
+
         for ind in self.individuals:
             model = ind.get_model()
-            model.fit(X_train, y_train)  # Treina o modelo
-            y_pred = model.predict(X_test)  # Faz previsões
-            score = pipeline_score(y_test, y_pred)  # Avalia o fitness
+
+            try:
+                scores = cross_val_score(
+                    model, X_train, y_train, cv=cv, scoring=pipeline_score_scorer())
+                score = np.mean(scores)  # Avalia o fitness
+            except Exception as e:
+                print(f"Erro ao avaliar o modelo: {e}")
+                score = 0
+
             ind.fitness = score  # Atribui o fitness ao indivíduo
             self.fitness.append(score)  # Adiciona à lista de fitness
 
@@ -246,7 +255,7 @@ class Population_SVM:
         else:
             self.individuals = [Individual_SVM(**ind) for ind in individuals]
 
-    def fitness_function(self, X_train, X_test, y_train, y_test):
+    def fitness_function(self, X_train, y_train, n_splits=5):
         """
         Avalia o fitness de todos os indivíduos da população.
 
@@ -259,11 +268,19 @@ class Population_SVM:
 
         warnings.simplefilter("ignore", ConvergenceWarning)
 
+        cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
+
         for ind in self.individuals:
             model = ind.get_model()
-            model.fit(X_train, y_train)  # Treina o modelo
-            y_pred = model.predict(X_test)  # Faz previsões
-            score = pipeline_score(y_test, y_pred)  # Avalia o fitness
+
+            try:
+                scores = cross_val_score(
+                    model, X_train, y_train, cv=cv, scoring=pipeline_score_scorer())
+                score = np.mean(scores)  # Avalia o fitness
+            except Exception as e:
+                print(f"Erro ao avaliar o modelo: {e}")
+                score = 0
+
             ind.fitness = score  # Atribui o fitness ao indivíduo
             self.fitness.append(score)  # Adiciona à lista de fitness
 
@@ -353,18 +370,27 @@ class Population_DT:
         else:
             self.individuals = [Individual_DT(**ind) for ind in individuals]
 
-    def fitness_function(self, X_train, X_test, y_train, y_test):
+    def fitness_function(self, X_train, y_train, n_splits=5):
         """
         Avalia o fitness de todos os indivíduos da população.
 
         :param X_train, y_train: Dados de treino.
         :param X_test, y_test: Dados de validação.
         """
+
+        cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
+
         for ind in self.individuals:
             model = ind.get_model()
-            model.fit(X_train, y_train)  # Treina o modelo
-            y_pred = model.predict(X_test)  # Faz previsões
-            score = pipeline_score(y_test, y_pred)  # Avalia o fitness
+
+            try:
+                scores = cross_val_score(
+                    model, X_train, y_train, cv=cv, scoring=pipeline_score_scorer())
+                score = np.mean(scores)  # Avalia o fitness
+            except Exception as e:
+                print(f"Erro ao avaliar o modelo: {e}")
+                score = 0
+
             ind.fitness = score  # Atribui o fitness ao indivíduo
             self.fitness.append(score)  # Adiciona à lista de fitness
 
