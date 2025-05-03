@@ -1,0 +1,13 @@
+dataset,best_params,train_score,test_score,execution_time
+AIDS Clinical Trials Group Study 175.csv,"{'weights': 'distance', 'p': 2, 'n_neighbors': 16}",5.4499728471109545,5.332028080555495,1.142439603805542
+Breast Cancer Wisconsin (Diagnostic).csv,"{'weights': 'distance', 'p': 1, 'n_neighbors': 5}",6.440356458344164,6.637080236166694,0.625328540802002
+CDC Diabetes Health Indicators.csv,"{'weights': 'uniform', 'p': 1, 'n_neighbors': 55}",4.463479190078229,4.449152307291768,8280.036953687668
+Contraceptive Method Choice.csv,"{'weights': 'uniform', 'p': 1, 'n_neighbors': 25}",5.175610422284821,5.457058057091315,1.2782480716705322
+dados_preprocessados.csv,"{'weights': 'distance', 'p': 1, 'n_neighbors': 16}",19.171148413342927,18.78432558670356,1.2527494430541992
+Diabetic Retinopathy Debrecen.csv,"{'weights': 'uniform', 'p': 2, 'n_neighbors': 22}",4.815600708067448,4.60136930537342,0.7662911415100098
+EEG Eye State.csv,"{'weights': 'distance', 'p': 1, 'n_neighbors': 5}",6.6858729226210745,6.754443220678966,38.23675274848938
+Hepatitis C Virus (HCV) for Egyptian patients.csv,"{'weights': 'uniform', 'p': 1, 'n_neighbors': 43}",3.4861404710617876,3.0844180143717144,1.0035443305969238
+Maternal Health Risk.csv,"{'weights': 'distance', 'p': 2, 'n_neighbors': 71}",8.210759657378707,7.897262317726653,0.9796123504638672
+National Health and Nutrition Health Survey 2013-2014 (NHANES) Age Prediction Subset.csv,"{'weights': 'distance', 'p': 2, 'n_neighbors': 99}",4.504796171557178,4.296259419817767,1.7144477367401123
+Parkinsons.csv,"{'weights': 'distance', 'p': 1, 'n_neighbors': 5}",5.801495909806275,5.18285824451238,0.49518418312072754
+Sepsis Survival Minimal Clinical Records.csv,"{'weights': 'distance', 'p': 2, 'n_neighbors': 16}",4.044783657620918,4.0009133290153684,61.842886209487915

@@ -6,6 +6,9 @@ import numpy as np
 import json
 from score import pipeline_score
 import os
+import io
+import sys
+import csv
 
 
 # Algoritmo Genético Principal
@@ -285,8 +288,27 @@ def tunning(json_KNN=None, json_DT=None, json_RF=None, json_SVM=None, verbose=Fa
     return bestIndividual
 
 
-def automl():
-    ...
+def capturar_e_salvar_prints_em_csv(func, *args, csv_filename="log.csv", **kwargs):
+    buffer = io.StringIO()
+    stdout_original = sys.stdout  # Guarda o stdout original
+    sys.stdout = buffer           # Redireciona para o buffer
+
+    try:
+        resultado = func(*args, **kwargs)
+    finally:
+        sys.stdout = stdout_original  # Restaura o stdout original
+
+    # Pega o conteúdo dos prints
+    saida = buffer.getvalue().splitlines()
+
+    # Salva em um CSV
+    with open(csv_filename, mode='w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(["mensagem"])
+        for linha in saida:
+            writer.writerow([linha])
+
+    return resultado
 
 
 if __name__ == '__main__':
@@ -294,8 +316,16 @@ if __name__ == '__main__':
     datasets = [f for f in os.listdir(
         'docs/db/dataSets') if f.endswith(".csv")]
 
+    # Caminho do arquivo CSV onde os resultados serão armazenados
+    result_csv_path = "results/GAIA_results.csv"
+
+    # Se o arquivo de resultados ainda não existir, cria com cabeçalho
+    if not os.path.exists(result_csv_path):
+        pd.DataFrame(columns=["dataset", "best_params", "test_score", "execution_time"]).to_csv(
+            result_csv_path, index=False)
+
     for dataset in datasets:
-        if dataset != "CDC Diabetes Health Indicators.csv" and dataset != "EEG Eye State.csv" and dataset != "Sepsis Survival Minimal Clinical Records.csv":
+        if dataset != "CDC Diabetes Health Indicators.csv":
             print(f"\nProcessando: {dataset}")
 
             # Carregar o dataset
@@ -312,16 +342,27 @@ if __name__ == '__main__':
                 X, y, test_size=0.25, random_state=42
             )
 
-            print("Executando algoritmo genético para RF\n")
+            start_time = time.perf_counter()
+            bestInd = tunning()
+            end_time = time.perf_counter()
+            exec_time = end_time - start_time
 
-            bestInd_RF = generation_RF()
-
-            print("Melhor indivíduo RF encontrado:")
-            bestInd_RF.show_hyperparam()
-            print(f"Fitness treino: {bestInd_RF.fitness}")
-
-            model = bestInd_RF.get_model()
+            model = bestInd.get_model()
             model.fit(X_train, y_train)
             y_pred = model.predict(X_test)
 
-            print(f"Fitness teste: {pipeline_score(y_test, y_pred)}\n")
+            final_score = capturar_e_salvar_prints_em_csv(
+                pipeline_score, y_test, y_pred, verbosity=True, csv_filename=f"tabela {dataset}")
+
+            # Criar um dicionário com os resultados
+            result = {
+                "dataset": dataset,
+                "best_params": str(bestInd.hyperparam),
+                "test_score": final_score,
+                "execution_time": exec_time,
+            }
+
+            # Adicionar ao arquivo CSV imediatamente
+            pd.DataFrame([result]).to_csv(result_csv_path,
+                                          mode="a", header=False, index=False
+                                          )

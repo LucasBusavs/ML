@@ -1,0 +1,9 @@
+dataset,test_score,execution_time
+EEG Eye State.csv,6.322264783311974,3601.9843945503235
+Sepsis Survival Minimal Clinical Records.csv,3.8811383565960567,3188.924268722534
+Hepatitis C Virus (HCV) for Egyptian patients.csv,3.3171941250253716,2833.819891691208
+dados_preprocessados.csv,21.006652917334723,3602.5729801654816
+National Health and Nutrition Health Survey 2013-2014 (NHANES) Age Prediction Subset.csv,4.3769105432454944,2837.8474521636963
+Maternal Health Risk.csv,8.549102984893194,3039.50786113739
+AIDS Clinical Trials Group Study 175.csv,6.107557847377789,2886.56112241745
+Breast Cancer Wisconsin (Diagnostic).csv,6.798344704398826,3191.5652310848236

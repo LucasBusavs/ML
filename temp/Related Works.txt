@@ -1,0 +1,102 @@
+In order to realize the automatic setting of multiple steps in machine learning, AutoML has been proposed and has become a research hotspot in academia and industry.
+The AutoML field consists of many approaches dealing with various aspects of the ML workflow.
+
+Automated hyperparameter optimization (HPO) is the basic, nevertheless a very important task of AutoML. In the simple case, 
+HPO is the task of finding a hyperparameter setting of a machine learning algorithm that performs the best on a given dataset. In the 1980s, Lerman PM [25] proposed GS, 
+the most commonly-used form of hyperparameter optimization that exhaustively explores a broad range of model parameters in order to discover the parameter 
+set that allows for the best model fit.
+
+In 2012, RS was proposed by Bergstra et al. [26]. Li [27] found that RS with early-stopping is a competitive neural architecture search baseline. There are problems
+of low efficiency and poor accuracy in RS, and each trial is independent of the previous search, which wastes a lot of time.
+
+At the same year, the first attempt to solve the CASH problem was the AutoML system Auto-WEKA [6]. It employs a Bayesian optimization method to find the optimal set of hyperparameters.
+To solve the model selection at the same time, an artificial hyperparameter which represents the selected model is added.
+
+Auto-Sklearn, introduced in 2015 as the successor to Auto-WEKA, extends the approach by incorporating meta-learning to improve search efficiency. While the core optimization process remains similar 
+to Auto-WEKA, auto-sklearn leverages prior performance data on similar datasets to warm-start the search. 
+Additionally, it constructs a final model as a weighted ensemble of the top-performing pipelines [7]. 
+The system was further enhanced in Auto-sklearn 2.0, which focused on improving practical aspects such as inference speed and automatic selection of system-level parameters [8].
+
+TPOT, proposed in 2016, is a robust AutoML framework that utilizes genetic programming to evolve tree-based pipelines. It provides methods of feature construction and feature selection
+and several estimators [9]. It also implements a novel feature selection method that allows the system to handle high-dimensional data without running out of memory [10].
+
+H2O AutoML, released in 2017, is a system developed for the H2O machine learning and data analytics platform [11]. It cross-validates selected machine learning algorithms and afterwards it combines
+the best ones into stacking ensembles.
+
+AutoGluon, introduced in 2020, is an AutoML system designed to provide robust performance with minimal user intervention [4]. 
+It supports a variety of tasks, including tabular classification and regression, object detection, and text prediction. 
+For tabular data, its core strategy is based on multi-layer stacking ensembles, where models are organized into levels, and predictions from one level are used as features for the next. 
+This layered approach, combined with automated feature preprocessing and strong default configurations, enables AutoGluon to achieve good results across various datasets.
+
+Among the optimization strategies explored in AutoML, evolutionary algorithms, based in the principles of natural selection, have proven to be effective tools for navigating complex and high-dimensional 
+search spaces. TPOT itself is a prominent example of the use of GP, employing a tree-based representation of preprocessing operators and models, along with classical 
+genetic operators such as crossover and mutation. More recent academic works have leveraged customizable approaches using libraries like DEAP [5], offering greater flexibility in individual design. 
+For instance, Xue et al. [12] proposed a GA-based framework for algorithm selection and hyperparameter optimization targeting medical applications, showing performance improvements over traditional 
+methods such as RS and GS. Furthermore, Olson et al. [13] demonstrated that evolutionary strategies can outperform Bayesian optimization in scenarios involving specific constraints 
+or multi-objective evaluation. This inherent flexibility is one of the main reasons GA were chosen for GAIA-ML, which adopts an adapted genetic model to maximize multiple evaluation metrics simultaneously.
+
+More recently, the use of LLMs has opened up new possibilities for the development of AutoML solutions. Studies such as LLM4AutoML [14] explore the use of LLMs to 
+suggest models and data transformations based on dataset descriptions, making the process more interpretable and accessible. Other approaches combine LLMs with agent-based systems and frameworks 
+such as LangChain to automatically generate machine learning pipelines from natural language instructions [15], or to automate algorithm selection through context-aware prompts [16]. 
+While these strategies still face challenges regarding reproducibility and performance control, they represent a promising trend in integrating natural language understanding with data science automation.
+
+In light of these developments, GAIA-ML positions itself as a hybrid approach that harnesses the flexibility of genetic algorithms to explore the solution space of machine learning pipelines, 
+while also incorporating the potential of LLM-guided warm-start techniques.
+
+
+REFS:
+
+[25] = P. M. Lerman, “Fitting segmented regression models by grid search,” J.
+Roy. Statist. Soc. Ser. C- Appl. Statist., vol. 29, pp. 77–84, 1980.
+
+[26] = J. Bergstra and Y. Bengio, “Random search for hyper-parameter optimization,” J. Mach. Learn. Res., vol. 13, no. 10, pp. 281–305, 2012.
+
+[27] = L. Li and A. Talwalkar, “Random search and reproducibility for neural
+architecture search,” in Proc. 35th Uncertainty Artif. Intell. Conf., 2020,
+pp. 367–377.
+
+[6] =  C. Thornton, F. Hutter, H. H. Hoos, and K. Leyton-Brown, “AutoWEKA: Automated selection and hyper-parameter optimization of
+classification algorithms,” CoRR, vol. abs/1208.3719, 2012. [Online].
+Available: http://arxiv.org/abs/1208.3719
+
+[7] = M. Feurer, A. Klein, K. Eggensperger, J. T. Springenberg, M. Blum,
+and F. Hutter, “Efficient and robust automated machine learning,”
+in Proceedings of the 28th International Conference on Neural
+Information Processing Systems - Volume 2, ser. NIPS’15. Cambridge,
+MA, USA: MIT Press, 2015, pp. 2755–2763. [Online]. Available:
+http://dl.acm.org/citation.cfm?id=2969442.2969547
+
+[8] = M. Feurer, K. Eggensperger, S. Falkner, M. Lindauer, and F. Hutter,
+“Auto-sklearn 2.0: The next generation,” 2020.
+
+[9] =  R. S. Olson, R. J. Urbanowicz, P. C. Andrews, N. A. Lavender, L. C.
+Kidd, and J. H. Moore, Applications of Evolutionary Computation:
+19th European Conference, EvoApplications 2016, Porto, Portugal,
+March 30 – April 1, 2016, Proceedings, Part I. Springer International
+Publishing, 2016, ch. Automating Biomedical Data Science Through
+Tree-Based Pipeline Optimization, pp. 123–137. [Online]. Available:
+http://dx.doi.org/10.1007/978-3-319-31204-0 9
+
+[10] = T. T. Le, W. Fu, and J. H. Moore, “Scaling tree-based automated
+machine learning to biomedical big data with a feature set selector,”
+Bioinformatics, vol. 36, no. 1, pp. 250–256, 2020.
+
+[11] = H2O.ai, H2O AutoML, June 2017, h2O version 3.30.0.1. [Online].
+Available: http://docs.h2o.ai/h2o/latest-stable/h2o-docs/automl.html
+
+[4] = Erickson, N., Mueller, J., Shirkov, A., Zhang, H., Li, M., Smola, A., & Mooney, P. (2020). AutoGluon-Tabular: Robust and Accurate AutoML for Structured Data. arXiv preprint arXiv:2003.06505.
+
+[5] = Fortin, F. A., et al. (2012). DEAP: Evolutionary Algorithms Made Easy. Journal of Machine Learning Research.
+
+[12] = Xue, B., Zhang, M., Browne, W. N., & Yao, X. (2015). A survey on evolutionary computation approaches to feature selection. IEEE Transactions on Evolutionary Computation.
+
+[13] = Olson, R. S., et al. (2016). Evaluation of a Tree-based Pipeline Optimization Tool for Automating Data Science. GECCO Conference.
+
+[14] = Zhang, Y., et al. (2023). LLM4AutoML: Empowering AutoML with Large Language Models. arXiv preprint arXiv:2308.03703.
+
+[15] = Chen, J., et al. (2023). Prompting LLMs to Build ML Pipelines. arXiv preprint arXiv:2311.01813
+
+[16] = Duan, Y., et al. (2023). AutoML-GPT: Leveraging LLMs for Automated ML Pipeline Generation. arXiv preprint arXiv:2312.05604.
+
+
+

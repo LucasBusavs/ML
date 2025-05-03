@@ -283,10 +283,6 @@ def tunning(json_KNN=None, json_DT=None, json_RF=None, json_SVM=None, verbose=Fa
     return bestIndividual
 
 
-def automl():
-    ...
-
-
 if __name__ == '__main__':
     # Carregar dataset
     dataset = pd.read_csv('docs/db/dataSets/dados_preprocessados.csv')
